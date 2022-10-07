@@ -1,0 +1,47 @@
+package com.wantobeme.lira.viewmodel
+
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.wantobeme.lira.model.KatalogCover
+import com.wantobeme.lira.model.RKatalog
+import com.wantobeme.lira.network.RetroAPI
+import kotlinx.coroutines.launch
+
+class KatalogViewModel : ViewModel() {
+    lateinit var katalogCoverListResponse: RKatalog
+    var katalogCoverResponse: List<KatalogCover> by mutableStateOf(listOf())
+    var errorMessage: String by mutableStateOf("")
+    var success: Boolean by mutableStateOf(true)
+    var loading: Boolean by mutableStateOf(true)
+
+//    init{
+//        getKatalogCoverList()
+//    }
+
+    fun getKatalogCoverList() {
+        viewModelScope.launch {
+            val apiService = RetroAPI.getInstance()
+            try {
+                val katalogList = apiService.getKatalog()
+                katalogCoverListResponse = katalogList
+                katalogCoverResponse = katalogCoverListResponse.data
+                Log.i("Retrofit Response List","${katalogCoverListResponse}")
+                Log.i("Retrofit Response", "${katalogCoverResponse}")
+                loading = false
+            }
+            catch (e: Exception) {
+                errorMessage = e.message.toString()
+                success = false
+                loading = false
+                Log.e("Retrofit.Response:gagal", "KatalogVM ${errorMessage}")
+            }
+        }
+//        loading =  false
+    }
+}
+
+
