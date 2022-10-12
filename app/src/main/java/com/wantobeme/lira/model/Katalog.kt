@@ -10,6 +10,13 @@ data class RKatalog(
 	val data: List<KatalogCover>
 )
 
+data class RKatalogDetail(
+	val title: String,
+	val status: String,
+	val message: String,
+	val data: List<KatalogDetail>
+)
+
 data class KatalogCover(
 
 	@field:SerializedName("id")

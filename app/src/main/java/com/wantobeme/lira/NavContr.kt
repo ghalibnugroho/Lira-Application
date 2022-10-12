@@ -25,7 +25,7 @@ fun myNavigation(navController: NavHostController){
         ) {
                 navBackStackEntry ->
             navBackStackEntry.arguments?.getString("id")
-                ?.let { DetailKatalogScreen(id = it) }
+                ?.let { DetailKatalogScreen(id = it.toInt()) }
         }
         composable(Screen.Search.route) {
             SearchScreen()

@@ -15,6 +15,10 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,14 +41,15 @@ import com.wantobeme.lira.viewmodel.KatalogViewModel
 @Composable
 fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
 
-    if(viewModel.success){
+    LaunchedEffect(key1 = Unit, block = {
         viewModel.getKatalogCoverList()
-        KatalogList(katalogList = viewModel.katalogCoverResponse)
-    }
-    else{
-        Text(text = viewModel.errorMessage)
-    }
-    if(viewModel.loading) showProgressBar()
+    })
+//    if(viewModel.loading == true){
+//        showProgressBar()
+//    }
+    KatalogList(katalogList = viewModel.katalogCoverResponse)
+
+
 }
 
 

@@ -31,6 +31,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.wantobeme.lira.model.KatalogCover
+import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.navigation.Screen
 import com.wantobeme.lira.ui.theme.LIRATheme
 import com.wantobeme.lira.viewmodel.KatalogViewModel
@@ -46,6 +47,7 @@ fun MainScreen(katalogViewModel: KatalogViewModel = KatalogViewModel()){
     ) {
 //        Greeting(name = "ghalib")
         KatalogScreen()
+//        DetailKatalogItem()
     }
 }
 
