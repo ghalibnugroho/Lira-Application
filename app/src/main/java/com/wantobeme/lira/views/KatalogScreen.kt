@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,18 +39,35 @@ import com.wantobeme.lira.viewmodel.KatalogViewModel
 @Composable
 fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
 
-    var loaded by remember{ mutableStateOf(false) }.apply { this.value }
-
-    LaunchedEffect(key1 = loaded, block = {
-        viewModel.getKatalogCoverList()
-    })
-    if(!viewModel.katalogResponse.isEmpty()){
-        KatalogList(katalogList = viewModel.katalogResponse)
-    }
-
-//    if(viewModel.loadKatalog == true){
-//        showProgressBar()
+//    LaunchedEffect(key1 = Unit, block = {
+//        viewModel.getKatalogCoverList()
+//    })
+//    if(!viewModel.katalogResponse.isEmpty()){
+//        KatalogList(katalogList = viewModel.katalogResponse)
 //    }
+
+    when(val state = viewModel.katalogResponse.value){
+        is KatalogViewModel.KatalogUiState.Empty ->
+            Text(
+                text = "No Data Available",
+                modifier = Modifier.padding(16.dp)
+            )
+        is KatalogViewModel.KatalogUiState.Loading ->
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
+            }
+        is KatalogViewModel.KatalogUiState.Error ->
+            Text(
+                text = "Error Happened, Sorry :(",
+                modifier = Modifier.padding(16.dp)
+            )
+        is KatalogViewModel.KatalogUiState.Loaded ->
+            KatalogList(katalogList = state.data.data)
+    }
 
 
 }

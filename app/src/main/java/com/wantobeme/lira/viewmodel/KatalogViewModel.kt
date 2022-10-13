@@ -15,13 +15,8 @@ import kotlinx.coroutines.launch
 
 class KatalogViewModel : ViewModel() {
     // backing properties Katalog Response
-    private var _katalogResponse by mutableStateOf(listOf<KatalogCover>())
-    var katalogResponse: List<KatalogCover> = emptyList()
-        get() = _katalogResponse
-    // backing properties Katalog Loading
-    private var _loadKatalog by mutableStateOf(false)
-    var loadKatalog: Boolean = false
-        get() = _loadKatalog
+    private var _katalogResponse = mutableStateOf<KatalogUiState>(KatalogUiState.Empty)
+    var katalogResponse: State<KatalogUiState> = _katalogResponse
     // backing properties Katalog ErrorMessage
     var errorMessage: String by mutableStateOf("")
 
@@ -29,47 +24,56 @@ class KatalogViewModel : ViewModel() {
         val apiService = RetroAPI.getInstance()
     }
 
-//    init{
-//        getKatalogCoverList()
-//    }
+    init{
+        getKatalogCoverList()
+    }
 
     fun getKatalogCoverList() {
+        _katalogResponse.value = KatalogUiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            _loadKatalog = true
             try {
                 val katalogList = apiService.getKatalog()
-                _katalogResponse = katalogList.data
-                Log.i("Retrofit Response", "${_katalogResponse}")
-                Log.i("Retrofit Response", "UI ${katalogResponse}")
-                _loadKatalog = false
+                Log.d("KatalogResponse", "${katalogList}")
+                _katalogResponse.value = KatalogUiState.Loaded(
+                    RKatalog(
+                        title = katalogList.title,
+                        status = katalogList.status,
+                        message = katalogList.message,
+                        data = katalogList.data.map {
+                            KatalogCover(
+                                id = it.id,
+                                bibid = it.bibid,
+                                title = it.title,
+                                author = it.author,
+                                publishYear = it.publishYear,
+                                coverURL = it.coverURL,
+                                quantity = it.quantity
+                            )
+                        }
+                    )
+                )
+                Log.d("KatalogResponseUI", "${_katalogResponse.value}")
+//                _katalogResponse = katalogList.data
+//                Log.i("Retrofit Response", "${_katalogResponse}")
+//                Log.i("Retrofit Response", "UI ${katalogResponse}")
             }
             catch (e: Exception) {
-                errorMessage = e.message.toString()
-                Log.e("Retrofit.Response:gagal", "KatalogVM ${errorMessage}")
-                _loadKatalog = false
+                _katalogResponse.value = KatalogUiState.Error(
+                    "Something Wrong inside, Catch Block Message :)"
+                )
+//                errorMessage = e.message.toString()
+//                Log.e("Retrofit.Response:gagal", "KatalogVM ${errorMessage}")
             }
         }
     }
 
-//    fun getKatalogList(){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try{
-//                val katalogList = apiService.getKatalog()
-//                katalogCoverListResponse = katalogList
-//                Resource.Success(data = katalogCoverListResponse)
-//            }catch (e: Exception){
-//                Resource.Error(message = e.message.toString())
-//            }
-//        }
-//        viewModelScope.launch{
-//            katalogState.value = KatalogState(isLoading = true)
-//            try{
-//
-//            }catch (e: Exception){
-//
-//            }
-//        }
-//    }
+
+    sealed class KatalogUiState {
+        object Empty : KatalogUiState()
+        object Loading : KatalogUiState()
+        class Loaded(val data: RKatalog) : KatalogUiState()
+        class Error(val message: String) : KatalogUiState()
+    }
 
 
 
