@@ -25,7 +25,9 @@ import com.wantobeme.lira.views.DetailKatalogScreen
 import com.wantobeme.lira.views.LoginScreen
 import com.wantobeme.lira.views.MainScreen
 import com.wantobeme.lira.views.SearchScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

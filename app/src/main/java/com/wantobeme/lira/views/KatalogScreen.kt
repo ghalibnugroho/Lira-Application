@@ -12,10 +12,8 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,26 +24,54 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.KatalogCover
 import com.wantobeme.lira.viewmodel.KatalogViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
+fun KatalogScreen(viewModel: KatalogViewModel = hiltViewModel()){
 
-    var loaded by remember{ mutableStateOf(false) }.apply { this.value }
+    val result = viewModel.list
+    viewModel.getKatalogList()
 
-    LaunchedEffect(key1 = loaded, block = {
-        viewModel.getKatalogCoverList()
-    })
-    if(!viewModel.katalogResponse.isEmpty()){
-        KatalogList(katalogList = viewModel.katalogResponse)
+
+//    if (result.isLoading) {
+//        Log.d("KatalogScreen", "MainContent: in the loading")
+//        Box(modifier = Modifier
+//            .fillMaxSize()) {
+//            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+//        }
+//    }
+//
+//
+//    if (result.error.isNotBlank()) {
+//        Log.e("KatalogScreen", "MainContent: ${result.error}")
+//        Box(modifier = Modifier
+//            .fillMaxSize()) {
+//            Text(
+//                modifier = Modifier.align(Alignment.Center),
+//                text = viewModel.list.error
+//            )
+//        }
+//    }
+
+
+    if (result.data.isNotEmpty()) {
+        KatalogList(katalogList = result.data)
+        Log.d("KatalogScreen", "MainContent: ${result.data}")
+
     }
+
+//    LaunchedEffect(key1 = Unit, block = {
+//        viewModel.getKatalogCoverList()
+//    })
+//    if(!viewModel.katalogResponse.isEmpty()){
+//        KatalogList(katalogList = viewModel.katalogResponse)
+//    }
 
 //    if(viewModel.loadKatalog == true){
 //        showProgressBar()

@@ -30,7 +30,7 @@ import com.wantobeme.lira.viewmodel.KatalogViewModel
 @Composable
 fun DetailKatalogScreen(
     id: Int,
-    vm: KatalogViewModel = KatalogViewModel()
+//    vm: KatalogViewModel = KatalogViewModel()
 ){
     Text(text = "Detail Katalog ID = ${id}")
 // ======================================================
