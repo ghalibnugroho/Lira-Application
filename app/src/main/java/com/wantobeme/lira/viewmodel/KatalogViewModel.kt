@@ -1,5 +1,6 @@
 package com.wantobeme.lira.viewmodel
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -10,13 +11,18 @@ import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.model.RKatalog
 import com.wantobeme.lira.model.RKatalogDetail
 import com.wantobeme.lira.network.RetroAPI
+import com.wantobeme.lira.views.uimodel.KatalogUIModel
+import com.wantobeme.lira.views.uimodel.KatalogUIModelApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+@SuppressLint("StaticFieldLeak")
 class KatalogViewModel : ViewModel() {
     // backing properties Katalog Response
-    private var _katalogResponse = mutableStateOf<KatalogUiState>(KatalogUiState.Empty)
-    var katalogResponse: State<KatalogUiState> = _katalogResponse
+    private var _katalogResponse = MutableStateFlow<KatalogUiState>(KatalogUiState.Empty)
+    var katalogResponse: StateFlow<KatalogUiState> = _katalogResponse
     // backing properties Katalog ErrorMessage
     var errorMessage: String by mutableStateOf("")
 
@@ -33,14 +39,13 @@ class KatalogViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val katalogList = apiService.getKatalog()
-                Log.d("KatalogResponse", "${katalogList}")
                 _katalogResponse.value = KatalogUiState.Loaded(
-                    RKatalog(
+                    KatalogUIModelApi(
                         title = katalogList.title,
                         status = katalogList.status,
                         message = katalogList.message,
                         data = katalogList.data.map {
-                            KatalogCover(
+                            KatalogUIModel(
                                 id = it.id,
                                 bibid = it.bibid,
                                 title = it.title,
@@ -52,26 +57,24 @@ class KatalogViewModel : ViewModel() {
                         }
                     )
                 )
-                Log.d("KatalogResponseUI", "${_katalogResponse.value}")
-//                _katalogResponse = katalogList.data
-//                Log.i("Retrofit Response", "${_katalogResponse}")
-//                Log.i("Retrofit Response", "UI ${katalogResponse}")
+                Log.d("fetchW", "${(_katalogResponse.value as KatalogUiState.Loaded).data}")
             }
             catch (e: Exception) {
-                _katalogResponse.value = KatalogUiState.Error(
-                    "Something Wrong inside, Catch Block Message :)"
-                )
-//                errorMessage = e.message.toString()
-//                Log.e("Retrofit.Response:gagal", "KatalogVM ${errorMessage}")
+                error()
             }
         }
     }
 
+    fun error(){
+        _katalogResponse.value = KatalogUiState.Error(
+            "Something Wrong inside, Catch Block Message :)"
+        )
+    }
 
     sealed class KatalogUiState {
         object Empty : KatalogUiState()
         object Loading : KatalogUiState()
-        class Loaded(val data: RKatalog) : KatalogUiState()
+        class Loaded(val data: KatalogUIModelApi) : KatalogUiState()
         class Error(val message: String) : KatalogUiState()
     }
 

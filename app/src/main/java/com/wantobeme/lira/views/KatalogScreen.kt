@@ -35,6 +35,7 @@ import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.KatalogCover
 import com.wantobeme.lira.viewmodel.KatalogViewModel
+import com.wantobeme.lira.views.uimodel.KatalogUIModel
 
 @Composable
 fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
@@ -46,7 +47,7 @@ fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
 //        KatalogList(katalogList = viewModel.katalogResponse)
 //    }
 
-    when(val state = viewModel.katalogResponse.value){
+    when(val state = viewModel.katalogResponse.collectAsState().value){
         is KatalogViewModel.KatalogUiState.Empty ->
             Text(
                 text = "No Data Available",
@@ -62,7 +63,7 @@ fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
             }
         is KatalogViewModel.KatalogUiState.Error ->
             Text(
-                text = "Error Happened, Sorry :(",
+                text = "Error Happened, Sorry :( ${state.message}",
                 modifier = Modifier.padding(16.dp)
             )
         is KatalogViewModel.KatalogUiState.Loaded ->
@@ -76,7 +77,7 @@ fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
 @OptIn(ExperimentalFoundationApi::class)
 //@ExperimentalFoundationApi
 @Composable
-fun KatalogList(katalogList: List<KatalogCover>){
+fun KatalogList(katalogList: List<KatalogUIModel>){
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         contentPadding = PaddingValues(
@@ -96,7 +97,7 @@ fun KatalogList(katalogList: List<KatalogCover>){
 // stateless
 @Composable
 fun CardItem(
-    katalog: KatalogCover,
+    katalog: KatalogUIModel,
     modifier: Modifier = Modifier
 ){
     val context = LocalContext.current

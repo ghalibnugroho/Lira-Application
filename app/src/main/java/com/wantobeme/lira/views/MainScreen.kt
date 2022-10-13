@@ -37,6 +37,7 @@ import com.wantobeme.lira.ui.theme.LIRATheme
 import com.wantobeme.lira.viewmodel.KatalogViewModel
 import com.wantobeme.lira.ui.theme.Primary
 import com.wantobeme.lira.ui.theme.ranchoFamily
+import com.wantobeme.lira.views.uimodel.KatalogUIModel
 
 @Composable
 fun MainScreen(katalogViewModel: KatalogViewModel = KatalogViewModel()){
@@ -77,7 +78,7 @@ fun Greeting(name: String) {
 fun DefaultPreview() {
     LIRATheme {
         val katalog  =
-            KatalogCover(
+            KatalogUIModel(
             "5778",
             "0010-0422000001",
             "Prosedur Penelitian : Suatu Pendekatan Praktik / Suharsimi Arikunto",
