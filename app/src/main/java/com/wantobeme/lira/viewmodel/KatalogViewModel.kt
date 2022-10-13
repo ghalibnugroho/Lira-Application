@@ -1,10 +1,8 @@
 package com.wantobeme.lira.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.KatalogCover
@@ -16,10 +14,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class KatalogViewModel : ViewModel() {
-    lateinit var katalogCoverListResponse: RKatalog
-    lateinit var katalogDetailListResponse: RKatalogDetail
-    var katalogCoverResponse: List<KatalogCover> by mutableStateOf(listOf())
-    var katalogDetailResponse: List<KatalogDetail> by mutableStateOf(listOf())
+    // backing properties Katalog Response
+    private var _katalogResponse by mutableStateOf(listOf<KatalogCover>())
+    var katalogResponse: List<KatalogCover> = emptyList()
+        get() = _katalogResponse
+    // backing properties Katalog Loading
+    private var _loadKatalog by mutableStateOf(false)
+    var loadKatalog: Boolean = false
+        get() = _loadKatalog
+    // backing properties Katalog ErrorMessage
     var errorMessage: String by mutableStateOf("")
 
     companion object{
@@ -32,16 +35,18 @@ class KatalogViewModel : ViewModel() {
 
     fun getKatalogCoverList() {
         viewModelScope.launch(Dispatchers.IO) {
+            _loadKatalog = true
             try {
                 val katalogList = apiService.getKatalog()
-                katalogCoverListResponse = katalogList
-                katalogCoverResponse = katalogCoverListResponse.data
-                Log.i("Retrofit Response List","${katalogCoverListResponse}")
-                Log.i("Retrofit Response", "${katalogCoverResponse}")
+                _katalogResponse = katalogList.data
+                Log.i("Retrofit Response", "${_katalogResponse}")
+                Log.i("Retrofit Response", "UI ${katalogResponse}")
+                _loadKatalog = false
             }
             catch (e: Exception) {
                 errorMessage = e.message.toString()
                 Log.e("Retrofit.Response:gagal", "KatalogVM ${errorMessage}")
+                _loadKatalog = false
             }
         }
     }

@@ -14,10 +14,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,13 +38,18 @@ import com.wantobeme.lira.viewmodel.KatalogViewModel
 @Composable
 fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
 
-    LaunchedEffect(key1 = Unit, block = {
+    var loaded by remember{ mutableStateOf(false) }.apply { this.value }
+
+    LaunchedEffect(key1 = loaded, block = {
         viewModel.getKatalogCoverList()
     })
-//    if(viewModel.loading == true){
+    if(!viewModel.katalogResponse.isEmpty()){
+        KatalogList(katalogList = viewModel.katalogResponse)
+    }
+
+//    if(viewModel.loadKatalog == true){
 //        showProgressBar()
 //    }
-    KatalogList(katalogList = viewModel.katalogCoverResponse)
 
 
 }
@@ -160,7 +162,7 @@ fun CardItem(
 fun showProgressBar(){
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
+//        modifier = Modifier.fillMaxSize()
     ){
         CircularProgressIndicator()
     }
