@@ -1,11 +1,16 @@
 package com.wantobeme.lira.views
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,19 +25,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.ui.theme.vLightGray
 import com.wantobeme.lira.viewmodel.KatalogViewModel
+import com.wantobeme.lira.views.uimodel.Resource
 
 @Composable
-fun DetailKatalogScreen(
-    id: Int,
-    vm: KatalogViewModel = KatalogViewModel()
-){
-    Text(text = "Detail Katalog ID = ${id}")
+fun DetailKatalogScreen(id: String?, viewModel: KatalogViewModel = hiltViewModel(), navController: NavController){
+    val katalogDetail = viewModel.katalogDetailResponse.collectAsState()
+    LaunchedEffect(key1 = katalogDetail == null){
+        id?.let { viewModel.getKatalogDetail(it) }
+    }
+    Log.d("KatalogDetail Screen", "$katalogDetail")
+    katalogDetail.value?.let {
+        when(it){
+            is Resource.Failure -> {
+                Text(text = "${it.exception.message}")
+            }
+            Resource.Loading -> {
+                showProgressBar()
+            }
+            is Resource.Success -> {
+                DetailKatalogItem(katalogDetail = it.result)
+            }
+        }
+    }
 // ======================================================
 
 }
@@ -42,42 +64,59 @@ fun DetailKatalogItem(
     katalogDetail: KatalogDetail,
     modifier: Modifier = Modifier
 ){
+    if(katalogDetail == null){
+        Text(text = "Null Detail")
+    }
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-        Row{
-            Text(text = "Detail Buku",
-                style = TextStyle(
-                    fontSize = 20.sp
-                ),
-                modifier = modifier
-                    .padding(25.dp, 10.dp, 10.dp,10.dp)
-            )
-        }
         Box(modifier = modifier
             .fillMaxWidth()
             .height(320.dp)
             .background(vLightGray)
             .align(Alignment.CenterHorizontally)
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(context = LocalContext.current)
-                        .crossfade(true)
-                        .data(katalogDetail.coverURL)
-                        .build(),
-                    filterQuality = FilterQuality.High,
-                    placeholder = painterResource(id = R.drawable.image_placeholder),
-                ),
-                contentDescription = null,
-                modifier = modifier
-                    .width(200.dp)
-                    .height(280.dp)
-                    .padding(10.dp)
-                    .clip(shape = RoundedCornerShape(10.dp))
-                    .align(Alignment.Center),
-                contentScale = ContentScale.Crop
-            )
+            if(katalogDetail.coverURL != null){
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(context = LocalContext.current)
+                            .crossfade(true)
+                            .data(katalogDetail.coverURL)
+                            .build(),
+                        filterQuality = FilterQuality.High,
+                        placeholder = painterResource(id = R.drawable.image_placeholder),
+                    ),
+                    contentDescription = null,
+                    modifier = modifier
+                        .width(200.dp)
+                        .height(280.dp)
+                        .padding(10.dp)
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .align(Alignment.Center),
+                    contentScale = ContentScale.Crop
+                )
+            }else{
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(context = LocalContext.current)
+                            .crossfade(true)
+                            .data(R.drawable.no_cover)
+                            .build(),
+                        filterQuality = FilterQuality.High,
+                        placeholder = painterResource(id = R.drawable.image_placeholder),
+                    ),
+                    contentDescription = null,
+                    modifier = modifier
+                        .width(200.dp)
+                        .height(280.dp)
+                        .padding(10.dp)
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .align(Alignment.Center),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
         Text(text = "In-Stock (${katalogDetail.quantity})",
             style = TextStyle(
@@ -108,24 +147,6 @@ fun DetailKatalogItem(
         ){
             Row(modifier = modifier.align(Alignment.Center)){
                 Box{
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "Tahun Terbit",
-                            modifier = modifier.widthIn(0.dp,105.dp)
-                        )
-                        Text(
-                            text = katalogDetail.publishYear,
-                            style = TextStyle(
-                                fontWeight = FontWeight.SemiBold
-                            ),
-                            textAlign = TextAlign.Center,
-                            modifier = modifier.widthIn(0.dp,50.dp)
-                        )
-                    }
-                }
-                Box(modifier = modifier
-                    .padding(10.dp, 0.dp)
-                ){
                     Column(horizontalAlignment = Alignment.CenterHorizontally){
                         Text(
                             text = "No. Rak",
@@ -139,6 +160,24 @@ fun DetailKatalogItem(
                             textAlign = TextAlign.Center,
                             modifier = modifier
                                 .widthIn(0.dp,105.dp)
+                        )
+                    }
+                }
+                Box(modifier = modifier
+                    .padding(10.dp, 0.dp)
+                ){
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Tahun Terbit",
+                            modifier = modifier.widthIn(0.dp,105.dp)
+                        )
+                        Text(
+                            text = katalogDetail.publishYear,
+                            style = TextStyle(
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = modifier.widthIn(0.dp,50.dp)
                         )
                     }
                 }
@@ -163,7 +202,7 @@ fun DetailKatalogItem(
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .padding(30.dp,20.dp)
+                .padding(30.dp, 20.dp)
         ){
             Column{
                 Row{
@@ -214,6 +253,7 @@ fun DetailKatalogItem(
                         text = katalogDetail.physicalDescription
                     )
                 }
+
             }
         }
     }
@@ -223,5 +263,23 @@ fun DetailKatalogItem(
 @Preview(showBackground = true)
 @Composable
 fun PDetailKatalog(){
-//    DetailKatalogItem()
+    val katalogDetail =
+        KatalogDetail(
+            id = "5778",
+            bibid = "awdaw",
+            title = "awdad",
+            author = "awdadw",
+            publisher = "awdad",
+            publishLocation = "awdadw",
+            publishYear = "awdad",
+            subject = "awdadw",
+            physicalDescription = "awdadwa",
+            isbn = "awdadw",
+            callNumber = "awdad",
+            coverURL = "https://firebasestorage.googleapis.com/v0/b/lira-6bad3.appspot.com/o/5778_result.webp?alt=media&token=253ba2ec-3b00-4f00-9c61-0a50ea8fc6a3",
+            quantity = 2
+        )
+
+
+    DetailKatalogItem(katalogDetail = katalogDetail)
 }

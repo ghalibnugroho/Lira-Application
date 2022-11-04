@@ -1,7 +1,5 @@
 package com.wantobeme.lira.views
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,10 +10,8 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,59 +22,65 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
-import com.wantobeme.lira.model.KatalogCover
+import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.viewmodel.KatalogViewModel
-
-@Composable
-fun KatalogScreen(viewModel: KatalogViewModel = KatalogViewModel()){
-
-    var loaded by remember{ mutableStateOf(false) }.apply { this.value }
-
-    LaunchedEffect(key1 = loaded, block = {
-        viewModel.getKatalogCoverList()
-    })
-    if(!viewModel.katalogResponse.isEmpty()){
-        KatalogList(katalogList = viewModel.katalogResponse)
-    }
-
-//    if(viewModel.loadKatalog == true){
-//        showProgressBar()
-//    }
-
-
-}
-
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.wantobeme.lira.views.uimodel.Resource
 
 @OptIn(ExperimentalFoundationApi::class)
-//@ExperimentalFoundationApi
 @Composable
-fun KatalogList(katalogList: List<KatalogCover>){
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        contentPadding = PaddingValues(
-            start = 10.dp,
-            end = 5.dp,
-            top = 12.dp,
-            bottom = 12.dp
-        ),
-        content = {
-            items(katalogList.size){ item ->
-                CardItem(katalog = katalogList[item])
+fun KatalogScreen(viewModel: KatalogViewModel = hiltViewModel(), navController: NavController){
+
+    val katalog = viewModel.katalogResponse.collectAsState()
+    katalog.value?.let { 
+        when(it){
+            is Resource.Failure -> {
+                Text(text = "${it.exception.message}")
+            }
+            Resource.Loading -> {
+                showProgressBar()
+            }
+            is Resource.Success -> {
+                if (it.result.isEmpty()){
+                    Text(text = "Response is Empty")
+                }else{
+                    LazyVerticalGrid(
+                        cells = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(
+                            start = 10.dp,
+                            end = 5.dp,
+                            top = 12.dp,
+                            bottom = 12.dp
+                        ),
+                        content = {
+                            items(it.result.size){ item ->
+                                CardItem(
+                                    katalog = it.result[item],
+                                    onClick = {
+//                                        viewModel.getKatalogDetail(it.result[item].id)
+                                        navController.navigate(Screen.Katalog.DetailKatalog.route + "/${it.result[item].id}")
+                                    }
+                                )
+                            }
+                        }
+                    )
+                }
             }
         }
-    )
+    }
 }
+
 
 // stateless
 @Composable
 fun CardItem(
-    katalog: KatalogCover,
+    katalog: Katalog,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val context = LocalContext.current
@@ -92,10 +94,10 @@ fun CardItem(
                 bottom = 15.dp
             )
             .clickable {
-                Toast
-                    .makeText(context, "Test", Toast.LENGTH_SHORT)
-                    .show()
-//                navController.navigate("DetailKatalog/${katalog.id}")
+                onClick.invoke()
+//                Toast
+//                    .makeText(context, "Test", Toast.LENGTH_SHORT)
+//                    .show()
             },
         backgroundColor = if (isSystemInDarkTheme()) Color.White else Color.White,
         elevation = 10.dp,
@@ -162,7 +164,7 @@ fun CardItem(
 fun showProgressBar(){
     Box(
         contentAlignment = Alignment.Center,
-//        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ){
         CircularProgressIndicator()
     }

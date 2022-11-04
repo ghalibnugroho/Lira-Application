@@ -1,78 +1,51 @@
 package com.wantobeme.lira.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wantobeme.lira.model.KatalogCover
+import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.model.KatalogDetail
-import com.wantobeme.lira.model.RKatalog
-import com.wantobeme.lira.model.RKatalogDetail
-import com.wantobeme.lira.network.RetroAPI
-import kotlinx.coroutines.Dispatchers
+import com.wantobeme.lira.repository.KatalogRepository
+import com.wantobeme.lira.views.uimodel.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class KatalogViewModel : ViewModel() {
-    // backing properties Katalog Response
-    private var _katalogResponse by mutableStateOf(listOf<KatalogCover>())
-    var katalogResponse: List<KatalogCover> = emptyList()
-        get() = _katalogResponse
-    // backing properties Katalog Loading
-    private var _loadKatalog by mutableStateOf(false)
-    var loadKatalog: Boolean = false
-        get() = _loadKatalog
-    // backing properties Katalog ErrorMessage
-    var errorMessage: String by mutableStateOf("")
+@HiltViewModel
+class KatalogViewModel @Inject constructor(private val katalogRepository: KatalogRepository): ViewModel() {
+    private val _katalogResponse = MutableStateFlow<Resource<List<Katalog>>?>(null)
+    val katalogResponse: StateFlow<Resource<List<Katalog>>?> = _katalogResponse
 
-    companion object{
-        val apiService = RetroAPI.getInstance()
-    }
+    private val _katalogDetailResponse = MutableStateFlow<Resource<KatalogDetail>?>(null)
+    val katalogDetailResponse: StateFlow<Resource<KatalogDetail>?> = _katalogDetailResponse
 
-//    init{
-//        getKatalogCoverList()
-//    }
-
-    fun getKatalogCoverList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _loadKatalog = true
-            try {
-                val katalogList = apiService.getKatalog()
-                _katalogResponse = katalogList.data
-                Log.i("Retrofit Response", "${_katalogResponse}")
-                Log.i("Retrofit Response", "UI ${katalogResponse}")
-                _loadKatalog = false
-            }
-            catch (e: Exception) {
-                errorMessage = e.message.toString()
-                Log.e("Retrofit.Response:gagal", "KatalogVM ${errorMessage}")
-                _loadKatalog = false
-            }
+    init {
+        viewModelScope.launch {
+            getKatalogList()
         }
     }
 
-//    fun getKatalogList(){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try{
-//                val katalogList = apiService.getKatalog()
-//                katalogCoverListResponse = katalogList
-//                Resource.Success(data = katalogCoverListResponse)
-//            }catch (e: Exception){
-//                Resource.Error(message = e.message.toString())
-//            }
-//        }
-//        viewModelScope.launch{
-//            katalogState.value = KatalogState(isLoading = true)
-//            try{
-//
-//            }catch (e: Exception){
-//
-//            }
-//        }
-//    }
+    fun getKatalogList() = viewModelScope.launch {
+        _katalogResponse.value = Resource.Loading
+        val result = katalogRepository.getKatalog()
+        _katalogResponse.value = result
+        Log.i("Katalog Result", "${result}")
+        Log.i("Katalog State", "${_katalogResponse.value}")
+    }
 
-
-
+    fun getKatalogDetail(id: String) = viewModelScope.launch {
+        _katalogDetailResponse.value = Resource.Loading
+        val result = katalogRepository.getKatalogDetail(id)
+        _katalogDetailResponse.value = result
+        Log.i("Katalog Detail Result", "${result}")
+        Log.i("Katalog Detail State", "${_katalogDetailResponse.value}")
+    }
 }
+
+
+
+
 
 

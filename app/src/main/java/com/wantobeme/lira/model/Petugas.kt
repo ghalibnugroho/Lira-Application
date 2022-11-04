@@ -1,6 +1,6 @@
 package com.wantobeme.lira.model
 
-data class Users(
+data class Petugas(
     val email: String,
 
 )
