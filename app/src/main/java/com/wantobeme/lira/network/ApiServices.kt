@@ -3,6 +3,7 @@ package com.wantobeme.lira.network
 import com.wantobeme.lira.model.RKatalog
 import com.wantobeme.lira.model.RKatalogDetail
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 
 interface ApiServices {
@@ -13,5 +14,5 @@ interface ApiServices {
     suspend fun getAllKatalog() : RKatalog
 
     @GET("katalogs/{id}")
-    suspend fun getDetailKatalog(id: String): RKatalogDetail
+    suspend fun getDetailKatalog(@Path("id") id: String): RKatalogDetail
 }

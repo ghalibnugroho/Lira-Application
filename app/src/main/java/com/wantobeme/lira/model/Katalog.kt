@@ -7,17 +7,17 @@ data class RKatalog(
 	val title: String,
 	val status: String,
 	val message: String,
-	val data: List<KatalogCover>
+	val data: List<Katalog>
 )
 
 data class RKatalogDetail(
 	val title: String,
 	val status: String,
 	val message: String,
-	val data: List<KatalogDetail>
+	val data: KatalogDetail
 )
 
-data class KatalogCover(
+data class Katalog(
 
 	@field:SerializedName("id")
 	val id: String,

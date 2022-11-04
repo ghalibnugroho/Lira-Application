@@ -1,34 +1,45 @@
 package com.wantobeme.lira.views
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.wantobeme.lira.model.KatalogCover
+import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.ui.theme.LIRATheme
 import com.wantobeme.lira.viewmodel.KatalogViewModel
 import com.wantobeme.lira.ui.theme.ranchoFamily
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.wantobeme.lira.ui.theme.Primary
+import com.wantobeme.lira.views.navigation.MainNavHost
 
 @Composable
 fun MainScreen(){
-
+    val navController = rememberNavController()
     Scaffold(
-        topBar = { TopBar()},
-        bottomBar = {}
-    ) {
-//        Greeting(name = "ghalib")
-        KatalogScreen()
-//        DetailKatalogItem()
+        topBar = { MainTopBar() },
+        bottomBar = { MainBottomBar(navController) }
+    ) { padding ->
+        Box(modifier = Modifier.padding(padding)) {
+            MainNavHost(navController = navController)
+        }
     }
 }
 
 @Composable
-fun TopBar(){
+fun MainTopBar(){
     TopAppBar(
         title = {
             Text("Literasi Raden",
@@ -44,8 +55,39 @@ fun TopBar(){
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun MainBottomBar(navController: NavController){
+    val itemNav = listOf(
+        Screen.Katalog,
+        Screen.Katalog.Search,
+        Screen.Auth.Login
+    )
+
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry.value?.destination?.route
+
+    BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
+
+        itemNav.forEach{ item ->
+            BottomNavigationItem(
+                selected = item.route == currentRoute,
+                label = {
+                        Text(text = item.title)
+                },
+                icon = {
+                       Icon(
+                           painter = painterResource(item.icon),
+                           contentDescription = item.title
+                       )
+                },
+                selectedContentColor = Primary,
+                unselectedContentColor = Color.Black,
+                onClick = {
+                    navController.navigate(item.route)
+                }
+            )
+        }
+
+    }
 }
 
 @Preview(showBackground = true)
@@ -53,7 +95,7 @@ fun Greeting(name: String) {
 fun DefaultPreview() {
     LIRATheme {
         val katalog  =
-            KatalogCover(
+            Katalog(
             "5778",
             "0010-0422000001",
             "Prosedur Penelitian : Suatu Pendekatan Praktik / Suharsimi Arikunto",
@@ -63,14 +105,20 @@ fun DefaultPreview() {
             4
             )
 
-        CardItem(katalog)
+        CardItem(katalog = katalog, onClick = {})
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun KScreen(){
-    LIRATheme {
-        KatalogScreen()
-    }
-}
+//@Composable
+//fun Greeting(name: String) {
+//    Text(text = "Hello $name!")
+//}
+
+
+//@Preview(showBackground = true)
+//@Composable
+//fun KScreen(){
+//    LIRATheme {
+//        KatalogScreen()
+//    }
+//}

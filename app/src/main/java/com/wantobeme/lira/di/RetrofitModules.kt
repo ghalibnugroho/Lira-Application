@@ -1,7 +1,7 @@
 package com.wantobeme.lira.di
 
 import com.wantobeme.lira.network.ApiServices
-import com.wantobeme.lira.repository.MainRepository
+import com.wantobeme.lira.repository.KatalogRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,7 +10,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -37,13 +36,13 @@ object RetrofitApi {
             .build()
 
     @Provides
-    fun provideMainRepository(api: ApiServices): MainRepository {
-        return MainRepository(api = api)
+    fun provideKatalogRepository(api: ApiServices): KatalogRepository {
+        return KatalogRepository(api = api)
     }
 }
 
 object Constant {
 
-    const val BASE_URL ="http://192.168.129.212:9090/"
+    const val BASE_URL ="http://192.168.204.212:9090/"
 
 }
