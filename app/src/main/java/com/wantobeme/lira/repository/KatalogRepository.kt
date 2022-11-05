@@ -4,6 +4,7 @@ import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.network.ApiServices
 import com.wantobeme.lira.views.uimodel.Resource
+import dagger.assisted.AssistedInject
 import javax.inject.Inject
 
 class KatalogRepository @Inject constructor(

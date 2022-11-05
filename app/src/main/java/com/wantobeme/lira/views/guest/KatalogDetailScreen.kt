@@ -1,5 +1,6 @@
 package com.wantobeme.lira.views
 
+import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,22 +25,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.ui.theme.vLightGray
-import com.wantobeme.lira.viewmodel.KatalogViewModel
+import com.wantobeme.lira.viewmodel.KatalogDetailViewModel
+import com.wantobeme.lira.viewmodel.ViewModelFactoryProvider
 import com.wantobeme.lira.views.uimodel.Resource
+import dagger.hilt.android.EntryPointAccessors
 
 @Composable
-fun DetailKatalogScreen(id: String?, viewModel: KatalogViewModel = hiltViewModel(), navController: NavController){
+fun provideKatalogDetailViewModel(bookId: String?): KatalogDetailViewModel {
+    val factory = EntryPointAccessors.fromActivity(
+        LocalContext.current as Activity,
+        ViewModelFactoryProvider::class.java
+    ).katalogDetailViewModelFactory()
+
+    return viewModel(factory = KatalogDetailViewModel.provideKatalogDetailViewModelFactory(factory, bookId))
+}
+
+@Composable
+fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavController){
+
     val katalogDetail = viewModel.katalogDetailResponse.collectAsState()
-    LaunchedEffect(key1 = katalogDetail == null){
-        id?.let { viewModel.getKatalogDetail(it) }
-    }
+
     Log.d("KatalogDetail Screen", "$katalogDetail")
     katalogDetail.value?.let {
         when(it){
@@ -55,8 +66,6 @@ fun DetailKatalogScreen(id: String?, viewModel: KatalogViewModel = hiltViewModel
             }
         }
     }
-// ======================================================
-
 }
 
 @Composable

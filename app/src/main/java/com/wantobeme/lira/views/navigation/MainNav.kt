@@ -7,11 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.wantobeme.lira.model.KatalogDetail
-import com.wantobeme.lira.viewmodel.KatalogViewModel
 import com.wantobeme.lira.views.*
 import com.wantobeme.lira.views.guest.RegistrasiScreen
-import com.wantobeme.lira.views.utils.getViewModelInstance
 
 @Composable
 fun MainNavHost(navController: NavHostController){
@@ -20,7 +17,7 @@ fun MainNavHost(navController: NavHostController){
         startDestination = Screen.Katalog.route
     ){
         composable(Screen.Katalog.route){
-            KatalogScreen(navController = navController)
+            KatalogScreen(viewModel = hiltViewModel(), navController = navController)
         }
         composable(Screen.Katalog.Search.route){
             SearchScreen()
@@ -29,7 +26,10 @@ fun MainNavHost(navController: NavHostController){
             arguments = listOf(navArgument(name = "Id") {
                 type = NavType.StringType
             })){ entry ->
-            DetailKatalogScreen(id = entry.arguments?.getString("Id"), navController = navController)
+            KatalogDetailScreen(
+                viewModel = provideKatalogDetailViewModel(bookId = entry.arguments?.getString("Id")),
+                navController = navController
+            )
         }
         composable(Screen.Auth.Login.route){
             LoginScreen()

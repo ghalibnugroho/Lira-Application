@@ -34,7 +34,7 @@ import com.wantobeme.lira.views.uimodel.Resource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun KatalogScreen(viewModel: KatalogViewModel = hiltViewModel(), navController: NavController){
+fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
 
     val katalog = viewModel.katalogResponse.collectAsState()
     katalog.value?.let { 
