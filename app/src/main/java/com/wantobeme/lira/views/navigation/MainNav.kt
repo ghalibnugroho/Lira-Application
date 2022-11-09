@@ -20,7 +20,7 @@ fun MainNavHost(navController: NavHostController){
             KatalogScreen(viewModel = hiltViewModel(), navController = navController)
         }
         composable(Screen.Katalog.Search.route){
-            SearchScreen()
+            SearchScreen(viewModel = hiltViewModel(), navController = navController)
         }
         composable(Screen.Katalog.DetailKatalog.route + "/{Id}",
             arguments = listOf(navArgument(name = "Id") {

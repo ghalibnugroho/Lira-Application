@@ -20,67 +20,67 @@ data class RKatalogDetail(
 data class Katalog(
 
 	@field:SerializedName("id")
-	val id: String,
+	var id: String,
 
 	@field:SerializedName("bibid")
-	val bibid: String,
+	var bibid: String,
 
 	@field:SerializedName("title")
-	val title: String,
+	var title: String,
 
 	@field:SerializedName("author")
-	val author: String,
+	var author: String,
 
 	@field:SerializedName("publishYear")
-	val publishYear: String,
+	var publishYear: String,
 
 	@field:SerializedName("coverURL")
-	val coverURL: String,
+	var coverURL: String,
 
 	@field:SerializedName("quantity")
-	val quantity: Int,
+	var quantity: Int,
 
 )
 
 data class KatalogDetail(
 
 	@field:SerializedName("id")
-	val id: String,
+	var id: String,
 
 	@field:SerializedName("bibid")
-	val bibid: String,
+	var bibid: String,
 
 	@field:SerializedName("title")
-	val title: String,
+	var title: String,
 
 	@field:SerializedName("author")
-	val author: String,
+	var author: String,
 
 	@field:SerializedName("publisher")
-	val publisher: String,
+	var publisher: String,
 
 	@field:SerializedName("publishLocation")
-	val publishLocation: String,
+	var publishLocation: String,
 
 	@field:SerializedName("publishYear")
-	val publishYear: String,
+	var publishYear: String,
 
 	@field:SerializedName("subject")
-	val subject: String,
+	var subject: String,
 
 	@field:SerializedName("physicalDescription")
-	val physicalDescription: String,
+	var physicalDescription: String,
 
 	@field:SerializedName("isbn")
-	val isbn: String,
+	var isbn: String,
 
 	@field:SerializedName("callNumber")
-	val callNumber: String,
+	var callNumber: String,
 
 	@field:SerializedName("coverURL")
-	val coverURL: String,
+	var coverURL: String,
 
 	@field:SerializedName("quantity")
-	val quantity: Int
+	var quantity: Int
 
 )

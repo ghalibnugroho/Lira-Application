@@ -1,4 +1,4 @@
-package com.wantobeme.lira.views.uimodel
+package com.wantobeme.lira.views.utils
 
 
 sealed class Resource<out T>{

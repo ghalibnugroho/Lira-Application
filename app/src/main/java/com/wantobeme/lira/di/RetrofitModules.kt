@@ -43,6 +43,6 @@ object RetrofitApi {
 
 object Constant {
 
-    const val BASE_URL ="http://192.168.204.212:9090/"
+    const val BASE_URL ="http://192.168.9.212:9090/"
 
 }

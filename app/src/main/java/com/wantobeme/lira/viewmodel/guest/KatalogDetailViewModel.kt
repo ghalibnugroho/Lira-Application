@@ -1,4 +1,4 @@
-package com.wantobeme.lira.viewmodel
+package com.wantobeme.lira.viewmodel.guest
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.repository.KatalogRepository
-import com.wantobeme.lira.views.uimodel.Resource
+import com.wantobeme.lira.views.utils.Resource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -16,8 +16,7 @@ import kotlinx.coroutines.launch
 
 class KatalogDetailViewModel @AssistedInject constructor(
     private val katalogRepository: KatalogRepository,
-    @Assisted
-    private val bookId: String?
+    @Assisted private val bookId: String?
 ): ViewModel() {
 
     private val _katalogDetailResponse = MutableStateFlow<Resource<KatalogDetail>?>(null)

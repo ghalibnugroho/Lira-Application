@@ -32,9 +32,10 @@ import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.ui.theme.vLightGray
-import com.wantobeme.lira.viewmodel.KatalogDetailViewModel
+import com.wantobeme.lira.viewmodel.guest.KatalogDetailViewModel
 import com.wantobeme.lira.viewmodel.ViewModelFactoryProvider
-import com.wantobeme.lira.views.uimodel.Resource
+import com.wantobeme.lira.views.utils.Resource
+import com.wantobeme.lira.views.utils.showProgressBar
 import dagger.hilt.android.EntryPointAccessors
 
 @Composable

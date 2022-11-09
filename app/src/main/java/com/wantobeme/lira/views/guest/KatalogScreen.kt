@@ -9,10 +9,8 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,10 +25,10 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.Katalog
-import com.wantobeme.lira.viewmodel.KatalogViewModel
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.wantobeme.lira.viewmodel.guest.KatalogViewModel
 import androidx.navigation.NavController
-import com.wantobeme.lira.views.uimodel.Resource
+import com.wantobeme.lira.views.utils.Resource
+import com.wantobeme.lira.views.utils.showProgressBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -62,7 +60,6 @@ fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
                                 CardItem(
                                     katalog = it.result[item],
                                     onClick = {
-//                                        viewModel.getKatalogDetail(it.result[item].id)
                                         navController.navigate(Screen.Katalog.DetailKatalog.route + "/${it.result[item].id}")
                                     }
                                 )
@@ -95,9 +92,6 @@ fun CardItem(
             )
             .clickable {
                 onClick.invoke()
-//                Toast
-//                    .makeText(context, "Test", Toast.LENGTH_SHORT)
-//                    .show()
             },
         backgroundColor = if (isSystemInDarkTheme()) Color.White else Color.White,
         elevation = 10.dp,
@@ -157,15 +151,5 @@ fun CardItem(
             }
 
         }
-    }
-}
-
-@Composable
-fun showProgressBar(){
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ){
-        CircularProgressIndicator()
     }
 }
