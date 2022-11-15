@@ -32,10 +32,10 @@ fun MainNavHost(navController: NavHostController){
             )
         }
         composable(Screen.Auth.Login.route){
-            LoginScreen()
+            LoginScreen(hiltViewModel(), navController)
         }
         composable(Screen.Auth.Registrasi.route){
-            RegistrasiScreen()
+            RegistrasiScreen(navController = navController)
         }
     }
 }

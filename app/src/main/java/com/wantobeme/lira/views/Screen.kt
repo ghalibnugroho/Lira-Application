@@ -23,7 +23,6 @@ sealed class Screen (var route: String, var icon: Int, var title: String ){
         object NotifAnggota: Screen("notifikasi_anggota", R.drawable.ic_baseline_notifications_24,"Notifikasi")
     }
     object Petugas: Screen("nav_petugas", R.drawable.ic_baseline_account_circle_24,"Anggota"){
-        object Dashboard: Screen("dashboard", R.drawable.ic_baseline_home_24, "Dashboard")//listAnggota
         object Sirkulasi: Screen("sirkulasi", R.drawable.ic_baseline_library_books_24, "Sirkulasi"){ //listDetailLoanAnggota
             object SirkulasiItem: Screen("sirkulasi_item", R.drawable.ic_baseline_home_24, "Sirkulasi Item")
         }

@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,10 +27,23 @@ import com.wantobeme.lira.views.navigation.MainNavHost
 
 @Composable
 fun MainScreen(){
+    var showTopBar by rememberSaveable { mutableStateOf(true) }
+    var showBottomBar by rememberSaveable { mutableStateOf(true) }
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    showTopBar = when (navBackStackEntry?.destination?.route) {
+        Screen.Auth.Login.route -> false
+        Screen.Auth.Registrasi.route -> false // on this screen bottom bar should be hidden
+        else -> true // in all other cases show bottom bar
+    }
+    showBottomBar = when (navBackStackEntry?.destination?.route) {
+        Screen.Auth.Login.route -> false
+        Screen.Auth.Registrasi.route -> false // on this screen bottom bar should be hidden
+        else -> true // in all other cases show bottom bar
+    }
     Scaffold(
-        topBar = { MainTopBar() },
-        bottomBar = { MainBottomBar(navController) }
+        topBar = { if(showTopBar) MainTopBar() },
+        bottomBar = { if(showBottomBar) MainBottomBar(navController) }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             MainNavHost(navController = navController)
@@ -78,7 +95,22 @@ fun MainBottomBar(navController: NavController){
                 selectedContentColor = Primary,
                 unselectedContentColor = Color.Black,
                 onClick = {
-                    navController.navigate(item.route)
+                    navController.navigate(item.route){
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
+                    }
+
                 }
             )
         }

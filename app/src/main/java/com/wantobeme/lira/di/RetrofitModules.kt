@@ -1,6 +1,7 @@
 package com.wantobeme.lira.di
 
 import com.wantobeme.lira.network.ApiServices
+import com.wantobeme.lira.repository.AuthRepository
 import com.wantobeme.lira.repository.KatalogRepository
 import dagger.Module
 import dagger.Provides
@@ -39,10 +40,15 @@ object RetrofitApi {
     fun provideKatalogRepository(api: ApiServices): KatalogRepository {
         return KatalogRepository(api = api)
     }
+
+    @Provides
+    fun provideAuthRepository(api: ApiServices): AuthRepository{
+        return AuthRepository(api = api)
+    }
 }
 
 object Constant {
 
-    const val BASE_URL ="http://192.168.9.212:9090/"
+    const val BASE_URL ="http://192.168.36.212:9090/"
 
 }
