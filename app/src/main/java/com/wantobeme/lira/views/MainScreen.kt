@@ -23,14 +23,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.wantobeme.lira.ui.theme.Primary
+import com.wantobeme.lira.viewmodel.guest.KatalogViewModel
 import com.wantobeme.lira.views.navigation.MainNavHost
 
 @Composable
-fun MainScreen(){
+fun MainScreen(katalogViewModel: KatalogViewModel){
+
     var showTopBar by rememberSaveable { mutableStateOf(true) }
     var showBottomBar by rememberSaveable { mutableStateOf(true) }
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+
     showTopBar = when (navBackStackEntry?.destination?.route) {
         Screen.Auth.Login.route -> false
         Screen.Auth.Registrasi.route -> false // on this screen bottom bar should be hidden

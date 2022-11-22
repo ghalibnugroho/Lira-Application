@@ -23,9 +23,7 @@ class KatalogDetailViewModel @AssistedInject constructor(
     val katalogDetailResponse: StateFlow<Resource<KatalogDetail>?> = _katalogDetailResponse
 
     init {
-        viewModelScope.launch {
-            getKatalogDetail(bookId)
-        }
+        getKatalogDetail(bookId)
     }
 
     @AssistedFactory
@@ -41,7 +39,6 @@ class KatalogDetailViewModel @AssistedInject constructor(
                     return assistedFactory.create(bookId) as T
                 }
             }
-
     }
 
     fun getKatalogDetail(id: String?) = viewModelScope.launch {

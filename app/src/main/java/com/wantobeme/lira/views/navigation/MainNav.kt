@@ -35,7 +35,7 @@ fun MainNavHost(navController: NavHostController){
             LoginScreen(hiltViewModel(), navController)
         }
         composable(Screen.Auth.Registrasi.route){
-            RegistrasiScreen(navController = navController)
+            RegistrasiScreen(hiltViewModel(),navController = navController)
         }
     }
 }

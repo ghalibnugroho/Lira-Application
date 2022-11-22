@@ -27,12 +27,20 @@ import com.wantobeme.lira.R
 import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.viewmodel.guest.KatalogViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.wantobeme.lira.views.utils.Resource
 import com.wantobeme.lira.views.utils.showProgressBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry.value?.destination?.route
+
+    LaunchedEffect(key1 = currentRoute == Screen.Katalog.route){
+        viewModel.jumpActivity()
+        viewModel.getKatalogList()
+    }
 
     val katalog = viewModel.katalogResponse.collectAsState()
     katalog.value?.let { 
@@ -45,7 +53,7 @@ fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
             }
             is Resource.Success -> {
                 if (it.result.isEmpty()){
-                    Text(text = "Response is Empty")
+                    Text(text = "Daftar Katalog Buku tidak tersedia.")
                 }else{
                     LazyVerticalGrid(
                         cells = GridCells.Fixed(2),
@@ -71,7 +79,6 @@ fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
         }
     }
 }
-
 
 // stateless
 @Composable

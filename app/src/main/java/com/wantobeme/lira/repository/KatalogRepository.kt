@@ -2,6 +2,7 @@ package com.wantobeme.lira.repository
 
 import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.model.KatalogDetail
+import com.wantobeme.lira.model.Koleksi
 import com.wantobeme.lira.network.ApiServices
 import com.wantobeme.lira.views.utils.Resource
 import java.util.regex.Pattern
@@ -42,6 +43,10 @@ class KatalogRepository @Inject constructor(
         }catch (exception: Exception){
             Resource.Failure(exception = exception)
         }
+    }
+
+    suspend fun addKatalogCollection(koleksi: Koleksi){
+
     }
 
 }

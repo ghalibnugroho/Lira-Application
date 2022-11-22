@@ -15,10 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class AnggotaActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
         setContent {
             LIRATheme {
-                val navController = rememberNavController()
-                AnggotaNav(navController = navController)
+                HomeScreen()
             }
         }
     }

@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
@@ -52,6 +55,14 @@ fun provideKatalogDetailViewModel(bookId: String?): KatalogDetailViewModel {
 fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavController){
 
     val katalogDetail = viewModel.katalogDetailResponse.collectAsState()
+    var showButtonPetugas by remember{ mutableStateOf(false) }
+
+    val current_Args = navController.currentDestination?.parent?.startDestDisplayName
+    Log.i("Katalog Detail - Arguments", "${current_Args}")
+
+    if(current_Args!!.contains("sirkulasi")){
+        showButtonPetugas = true
+    }
 
     Log.d("KatalogDetail Screen", "$katalogDetail")
     katalogDetail.value?.let {
@@ -63,7 +74,7 @@ fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavCon
                 showProgressBar()
             }
             is Resource.Success -> {
-                DetailKatalogItem(katalogDetail = it.result)
+                DetailKatalogItem(katalogDetail = it.result, showButtonPetugas)
             }
         }
     }
@@ -72,6 +83,7 @@ fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavCon
 @Composable
 fun DetailKatalogItem(
     katalogDetail: KatalogDetail,
+    buttonState: Boolean,
     modifier: Modifier = Modifier
 ){
     if(katalogDetail == null){
@@ -128,12 +140,30 @@ fun DetailKatalogItem(
                 )
             }
         }
-        Text(text = "In-Stock (${katalogDetail.quantity})",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.ExtraBold
-            ),
-            modifier = modifier.padding(25.dp,30.dp, 20.dp, 10.dp))
+        Row(
+            modifier = modifier.padding(25.dp,30.dp, 20.dp, 10.dp)
+        ){
+            Text(text = "In-Stock (${katalogDetail.quantity})",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.ExtraBold
+                ),
+                modifier = Modifier.align(CenterVertically)
+            )
+            Spacer(modifier = Modifier.size(15.dp))
+            if(buttonState){
+                Button(modifier = Modifier.height(50.dp).width(50.dp),
+                    onClick = {
+//                    navController.navigate(Screen.Auth.Registrasi.route)
+                }) {
+                    Text("+",
+                        style = TextStyle(
+                            fontSize = 20.sp
+                        )
+                    )
+                }
+            }
+        }
         Text(text = katalogDetail.title,
             style = TextStyle(
                 fontSize = 26.sp,
@@ -273,23 +303,24 @@ fun DetailKatalogItem(
 @Preview(showBackground = true)
 @Composable
 fun PDetailKatalog(){
+    val navController = rememberNavController()
     val katalogDetail =
         KatalogDetail(
             id = "5778",
-            bibid = "awdaw",
-            title = "awdad",
-            author = "awdadw",
-            publisher = "awdad",
-            publishLocation = "awdadw",
-            publishYear = "awdad",
-            subject = "awdadw",
-            physicalDescription = "awdadwa",
-            isbn = "awdadw",
-            callNumber = "awdad",
+            bibid = "value",
+            title = "value - judul buku",
+            author = "penulis buku",
+            publisher = "value",
+            publishLocation = "value",
+            publishYear = "value",
+            subject = "value",
+            physicalDescription = "value",
+            isbn = "value",
+            callNumber = "value",
             coverURL = "https://firebasestorage.googleapis.com/v0/b/lira-6bad3.appspot.com/o/5778_result.webp?alt=media&token=253ba2ec-3b00-4f00-9c61-0a50ea8fc6a3",
             quantity = 2
         )
 
 
-    DetailKatalogItem(katalogDetail = katalogDetail)
+    DetailKatalogItem(katalogDetail = katalogDetail,true)
 }

@@ -1,7 +1,6 @@
 package com.wantobeme.lira.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,24 +8,18 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.dsc.form_builder.TextFieldState
-import com.wantobeme.lira.repository.AuthRepository
 import com.wantobeme.lira.ui.theme.OptionColor
 import com.wantobeme.lira.ui.theme.Primary
 import com.wantobeme.lira.ui.theme.ranchoFamily
@@ -46,7 +39,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController){
     val passwordState: TextFieldState = formState.getState("password")
     var showAlertDialog = remember{ mutableStateOf(false) }
 
-    val userToken = authViewModel.userToken.collectAsState()
+    val userToken = authViewModel.guestToken.collectAsState()
     val context = LocalContext.current
     Box(
         contentAlignment = Alignment.Center,

@@ -1,21 +1,21 @@
 package com.wantobeme.lira.model
 
 // response API registrasi
-data class Guest(
+data class GuestRegistrasi(
     val status: Int,
     val message: String
 )
 
 // response API after Login
-data class UserToken(
+data class GuestToken(
     val status: Int,
     val message: String,
     val token: String
 )
 
-data class User(
-    val identitas: String = "",
-    val email: String = "",
-    val role: Int = 0,
+data class Guest(
+    var identitas: String = "",
+    var email: String = "",
+    var role: Int = 0,
 )
 
