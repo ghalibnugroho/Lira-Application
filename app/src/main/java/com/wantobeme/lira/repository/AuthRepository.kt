@@ -64,11 +64,17 @@ class AuthRepository @Inject constructor(
     }
 
     fun getDataUser() = context.dataStore.data.map { preferences ->
-        Guest(
-            identitas = preferences[USER_IDENTITAS_KEY]!!,
-            email = preferences[USER_EMAIL_KEY]!!,
-            role = preferences[USER_ROLE_KEY]!!
-        )
+        preferences[USER_IDENTITAS_KEY]?.let {
+            preferences[USER_EMAIL_KEY]?.let { it1 ->
+                preferences[USER_ROLE_KEY]?.let { it2 ->
+                    Guest(
+                        identitas = it,
+                        email = it1,
+                        role = it2
+                    )
+                }
+            }
+        }
     }
 
     suspend fun registrasi(registrasiState: RegistrasiState): Resource<GuestRegistrasi>{

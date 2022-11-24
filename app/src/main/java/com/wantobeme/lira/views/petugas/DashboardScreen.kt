@@ -25,9 +25,12 @@ import com.wantobeme.lira.views.navigation.PetugasNav
 
 @Composable
 fun DashBoardScreen(){
+
     val navController = rememberNavController()
     Scaffold(
-        topBar = { PetugasTopBar() },
+        topBar = {
+            PetugasTopBar(navController)
+        },
         bottomBar = { PetugasBottomBar(navController) }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
@@ -37,7 +40,8 @@ fun DashBoardScreen(){
 }
 
 @Composable
-fun PetugasTopBar(){
+fun PetugasTopBar(navController: NavController){
+
     TopAppBar(
         title = {
             Text("Dashboard",

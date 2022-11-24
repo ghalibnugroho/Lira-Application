@@ -1,6 +1,5 @@
 package com.wantobeme.lira.views.navigation
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -52,8 +51,34 @@ fun PetugasNav(navController: NavHostController){
                 navController = navController
             )
         }
+        composable(Screen.Petugas.Search.DetailKatalog.Koleksi.route + "/{Id}",
+            arguments = listOf(navArgument(name = "Id") {
+                type = NavType.StringType
+            })){ entry ->
+            KoleksiScreen(
+                viewModel = provideKoleksiViewModel(bookId = entry.arguments?.getString("Id")),
+                navController = navController
+            )
+        }
+        composable(Screen.Petugas.Search.DetailKatalog.Koleksi.Tambah.route + "/{Id}",
+            arguments = listOf(navArgument(name = "Id") {
+                type = NavType.StringType
+            })){ entry ->
+            TambahKoleksiScreen(
+                viewModel = provideKoleksiViewModel(bookId = entry.arguments?.getString("Id")),
+                navController = navController
+            )
+        }
+        composable(Screen.Petugas.Search.DetailKatalog.Koleksi.GenerateQR.route + "/{kodeQR}",
+            arguments = listOf(navArgument(name = "kodeQR") {
+                type = NavType.StringType
+            })){ entry ->
+            KoleksiQRGeneratorScreen(
+                qrViewModel = provideQRViewModel(kodeQR = entry.arguments?.getString("kodeQR"))
+            )
+        }
         composable(Screen.Petugas.DaftarPresensi.route){
-            DaftarPresensiScreen()
+            DaftarPresensiScreen(hiltViewModel(), navController)
         }
         composable(Screen.Petugas.Manage.route){
             ManageScreen(hiltViewModel(), hiltViewModel())

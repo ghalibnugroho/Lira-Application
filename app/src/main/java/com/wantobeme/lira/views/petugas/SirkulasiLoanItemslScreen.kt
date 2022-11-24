@@ -56,7 +56,7 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
                 ){
-                    Text(text = "Detail peminjaman buku tidak tersedia.")
+                    Text(text = "Terjadi kesalahan pada sistem terkait Detail peminjaman buku.")
                 }
             }
             Resource.Loading -> {
@@ -172,16 +172,7 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                             )
                                         )
                                     }
-
-//                                    Text(
-//                                        text = "081333254864",
-//                                        style = TextStyle(
-//                                            fontSize = 14.sp,
-//                                            fontWeight = FontWeight.Medium
-//                                        )
-//                                    )
                                 }
-
                             }
                             Spacer(modifier = Modifier.size(10.dp))
                             LazyColumn() {

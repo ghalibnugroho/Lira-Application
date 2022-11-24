@@ -28,8 +28,6 @@ class AuthViewModel @Inject constructor(
     private val _guestToken = MutableStateFlow<Resource<Guest>?>(null)
     val guestToken: StateFlow<Resource<Guest>?> = _guestToken
 
-    val guestDataStore = mutableStateOf(Guest())
-
     private val _guestRegistrasi = MutableStateFlow<Resource<GuestRegistrasi>?>(null)
     val guestRegistrasi: StateFlow<Resource<GuestRegistrasi>?> = _guestRegistrasi
 

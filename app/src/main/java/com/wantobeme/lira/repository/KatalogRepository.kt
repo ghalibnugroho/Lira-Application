@@ -1,9 +1,8 @@
 package com.wantobeme.lira.repository
 
-import com.wantobeme.lira.model.Katalog
-import com.wantobeme.lira.model.KatalogDetail
-import com.wantobeme.lira.model.Koleksi
+import com.wantobeme.lira.model.*
 import com.wantobeme.lira.network.ApiServices
+import com.wantobeme.lira.views.uiState.KoleksiState
 import com.wantobeme.lira.views.utils.Resource
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -45,8 +44,40 @@ class KatalogRepository @Inject constructor(
         }
     }
 
-    suspend fun addKatalogCollection(koleksi: Koleksi){
+    suspend fun getKoleksiKatalog(id: String): Resource<List<Koleksi>>{
+        return try{
+            val data = api.getKoleksiKatalog(id).data
+            Resource.Success(result = data)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
 
+    suspend fun addKatalogCollection(katalogId: String, koleksiState: KoleksiState): Resource<KoleksiOperation>{
+        return try{
+            val data = api.addCollection(katalogId, koleksiState.nomorQRCode, koleksiState.nomorKoleksi)
+            Resource.Success(result = data)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
+
+    suspend fun deleteKatalogColletion(collectionId: String): Resource<KoleksiOperation>{
+        return try{
+            val data = api.deleteKoleksi(collectionId)
+            Resource.Success(data)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
+
+    suspend fun getNomorQRCode(kodeQR: String): Resource<QRCode>{
+        return try{
+            val data = api.getKodeQR(kodeQR)
+            Resource.Success(result = data)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
     }
 
 }

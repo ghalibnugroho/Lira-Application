@@ -1,5 +1,6 @@
 package com.wantobeme.lira.viewmodel.petugas
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.Presensi
@@ -23,5 +24,6 @@ class DaftarPresensiViewModel @Inject constructor(
         _allPresensi.value = Resource.Loading
         val result = presensiRepository.getAllDaftarPresensi()
         _allPresensi.value = result
+        Log.i("Presensi","${result}")
     }
 }

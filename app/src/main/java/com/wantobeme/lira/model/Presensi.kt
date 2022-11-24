@@ -1,5 +1,7 @@
 package com.wantobeme.lira.model
 
+import com.google.gson.annotations.SerializedName
+
 data class RPresensi(
     val title: String,
     val status: String,
@@ -8,7 +10,13 @@ data class RPresensi(
 )
 
 data class Presensi(
-    val namaLengkap : String,
+
+    @field:SerializedName("memberNo")
     val nomorIdentitas: String,
+
+    @field:SerializedName("fullName")
+    val namaLengkap: String,
+
+    @field:SerializedName("createdate")
     val tanggalPresensi: String
 )

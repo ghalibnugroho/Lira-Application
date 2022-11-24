@@ -1,12 +1,7 @@
 package com.wantobeme.lira.network
 
 import com.wantobeme.lira.model.*
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface ApiServices {
@@ -50,10 +45,28 @@ interface ApiServices {
     @GET("petugas/anggotaCollectionLoanItems/{collectionLoan_id}")
     suspend fun getCollectionLoanItemsAnggota(@Path("collectionLoan_id") collectionLoan_id: String): RSirkulasiLoanItems
 
+    @GET("petugas/koleksiKatalog/{id}")
+    suspend fun getKoleksiKatalog(@Path("id") id: String): RKoleksi
+
+    @FormUrlEncoded
+    @POST("petugas/tambahKoleksi")
+    suspend fun addCollection(
+        @Field("katalogId") katalogId: String,
+        @Field("nomorQRCode") nomorQRCode: String,
+        @Field("nomorKoleksi") nomorKoleksi: String
+    ): KoleksiOperation
+
+    @DELETE("petugas/delete/koleksi/{collectionId}")
+    suspend fun deleteKoleksi(@Path("collectionId") collectionId: String): KoleksiOperation
+
+    @GET("petugas/kodeQR/{QR}")
+    suspend fun getKodeQR(@Path("QR") kodeQR: String): QRCode
+
     @GET("petugas/daftarPresensi")
     suspend fun getAllDaftarPresensi(): RPresensi
 
     // Anggota
     @GET("anggota/daftarPresensi/{memberNo}")
     suspend fun getPresensiByNomorAnggota(@Path("memberNo") memberNo: String): RPresensi
+
 }

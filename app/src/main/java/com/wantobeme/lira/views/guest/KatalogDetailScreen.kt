@@ -2,6 +2,7 @@ package com.wantobeme.lira.views
 
 import android.app.Activity
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -55,6 +55,7 @@ fun provideKatalogDetailViewModel(bookId: String?): KatalogDetailViewModel {
 fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavController){
 
     val katalogDetail = viewModel.katalogDetailResponse.collectAsState()
+
     var showButtonPetugas by remember{ mutableStateOf(false) }
 
     val current_Args = navController.currentDestination?.parent?.startDestDisplayName
@@ -74,16 +75,28 @@ fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavCon
                 showProgressBar()
             }
             is Resource.Success -> {
-                DetailKatalogItem(katalogDetail = it.result, showButtonPetugas)
+                DetailKatalogItem(katalogDetail = it.result, showButtonPetugas, navController)
+                BackHandler {
+                    navController.navigate(Screen.Petugas.Search.route){
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+
+
 }
 
 @Composable
 fun DetailKatalogItem(
     katalogDetail: KatalogDetail,
     buttonState: Boolean,
+    navController: NavController,
     modifier: Modifier = Modifier
 ){
     if(katalogDetail == null){
@@ -152,13 +165,15 @@ fun DetailKatalogItem(
             )
             Spacer(modifier = Modifier.size(15.dp))
             if(buttonState){
-                Button(modifier = Modifier.height(50.dp).width(50.dp),
+                Button(modifier = Modifier
+                    .height(45.dp)
+                    .width(45.dp),
                     onClick = {
-//                    navController.navigate(Screen.Auth.Registrasi.route)
+                    navController.navigate(Screen.Petugas.Search.DetailKatalog.Koleksi.route + "/${katalogDetail.id}")
                 }) {
                     Text("+",
                         style = TextStyle(
-                            fontSize = 20.sp
+                            fontSize = 15.sp
                         )
                     )
                 }
@@ -241,7 +256,7 @@ fun DetailKatalogItem(
         }
         Box(
             modifier = modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(30.dp, 20.dp)
         ){
             Column{
@@ -293,12 +308,12 @@ fun DetailKatalogItem(
                         text = katalogDetail.physicalDescription
                     )
                 }
-
             }
         }
     }
 
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -322,5 +337,5 @@ fun PDetailKatalog(){
         )
 
 
-    DetailKatalogItem(katalogDetail = katalogDetail,true)
+    DetailKatalogItem(katalogDetail = katalogDetail,true, navController)
 }

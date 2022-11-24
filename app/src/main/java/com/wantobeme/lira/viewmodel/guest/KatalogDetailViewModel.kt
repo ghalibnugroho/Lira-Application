@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.KatalogDetail
+import com.wantobeme.lira.model.Koleksi
 import com.wantobeme.lira.repository.KatalogRepository
 import com.wantobeme.lira.views.utils.Resource
 import dagger.assisted.Assisted
@@ -48,4 +49,5 @@ class KatalogDetailViewModel @AssistedInject constructor(
         Log.i("Katalog Detail Result", "${result}")
         Log.i("Katalog Detail State", "${_katalogDetailResponse.value}")
     }
+
 }

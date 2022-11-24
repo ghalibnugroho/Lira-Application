@@ -33,9 +33,6 @@ import com.wantobeme.lira.views.utils.showProgressBar
 
 @Composable
 fun SirkulasiAnggotaScreen(dashboardViewModel: DashboardViewModel, navController: NavController){
-    
-    
-//    Text(text = "Petugas - Dashboard Screen")
 
     val anggota = dashboardViewModel.anggotaResponse.collectAsState()
 
@@ -56,16 +53,29 @@ fun SirkulasiAnggotaScreen(dashboardViewModel: DashboardViewModel, navController
                         Text(text = "Tidak ada anggota yang terdaftar.")
                     }
                 }else{
-                    LazyColumn(){
-                        items(it.result.size){ item ->
-                            SirkulasiAnggotaItem(
-                                sirkulasiAnggota = it.result[item],
-                                onClick = {
-                                    navController.navigate(Screen.Petugas.Sirkulasi.Loan.route + "/${it.result[item].nomorIdentitas}")
-                                }
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row{
+                            Spacer(modifier = Modifier.size(5.dp))
+                            Text(
+                                text = "Latest sort~",
+                                style = TextStyle(
+                                    fontSize = 8.sp,
+                                    fontWeight = FontWeight.Light
+                                )
                             )
                         }
+                        LazyColumn(){
+                            items(it.result.size){ item ->
+                                SirkulasiAnggotaItem(
+                                    sirkulasiAnggota = it.result[item],
+                                    onClick = {
+                                        navController.navigate(Screen.Petugas.Sirkulasi.Loan.route + "/${it.result[item].nomorIdentitas}")
+                                    }
+                                )
+                            }
+                        }
                     }
+
                 }
             }
         }
@@ -93,10 +103,10 @@ fun SirkulasiAnggotaItem(
                 painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context = LocalContext.current)
                         .crossfade(true)
-                        .data(R.drawable.ic_baseline_account_circle_24)
+                        .data(R.drawable.ic_baseline_account_circle_green_24)
                         .build(),
                     filterQuality = FilterQuality.High,
-                    placeholder = painterResource(id = R.drawable.ic_baseline_account_circle_24),
+                    placeholder = painterResource(id = R.drawable.ic_baseline_account_circle_green_24),
                 ),
                 contentDescription = null,
                 modifier = Modifier

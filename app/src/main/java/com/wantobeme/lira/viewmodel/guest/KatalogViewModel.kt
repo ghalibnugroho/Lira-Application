@@ -17,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -36,10 +37,12 @@ class KatalogViewModel @Inject constructor(
     // this function exist because katalogscreen being first destination
     fun jumpActivity() = viewModelScope.launch {
         authRepository.getDataUser().collect(){ preferences ->
-            if(preferences.role == 1){
-                context.startNewActivity(PetugasActivity::class.java)
-            }else if(preferences.role == 2){
-                context.startNewActivity(AnggotaActivity::class.java)
+            if (preferences != null) {
+                if(preferences.role == 1){
+                    context.startNewActivity(PetugasActivity::class.java)
+                }else if(preferences.role == 2){
+                    context.startNewActivity(AnggotaActivity::class.java)
+                }
             }
         }
     }

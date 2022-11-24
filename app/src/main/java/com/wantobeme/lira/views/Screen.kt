@@ -27,7 +27,12 @@ sealed class Screen (var route: String, var icon: Int, var title: String ){
             }
         }
         object Search: Screen("searchKatalogPetugas", R.drawable.ic_baseline_search_24, "Search"){
-            object DetailKatalog: Screen("detailKatalog", R.drawable.ic_baseline_home_24, "Detail Katalog")
+            object DetailKatalog: Screen("detailKatalog", R.drawable.ic_baseline_home_24, "Detail Katalog"){
+                object Koleksi: Screen("Koleksi", R.drawable.ic_baseline_library_books_24, "Koleksi"){
+                    object Tambah: Screen("tambahKoleksi", R.drawable.ic_baseline_library_books_24, "Tambah Koleksi")
+                    object GenerateQR: Screen("generateQR", R.drawable.ic_baseline_qr_code_2_24, "Generate QR")
+                }
+            }
         }
         object DaftarPresensi: Screen("daftarPresensi", R.drawable.ic_baseline_fact_check_24, "Presensi")//listPresensi
         object Manage: Screen("opsiPetugas", R.drawable.ic_outline_account_circle_24, "Manage")

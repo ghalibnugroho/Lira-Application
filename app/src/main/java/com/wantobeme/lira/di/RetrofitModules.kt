@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 
 object Constant {
-    const val BASE_URL ="http://192.168.134.212:9090/"
+    const val BASE_URL ="http://192.168.21.212:9090/"
 }
 
 @InstallIn(SingletonComponent::class)
