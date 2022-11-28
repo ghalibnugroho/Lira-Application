@@ -46,13 +46,13 @@ fun RegistrasiScreen(authViewModel: AuthViewModel, navController: NavController)
     val registrasiState = remember{ authViewModel.registrasiState }
     val emailState: TextFieldState = registrasiState.getState("email")
     val passwordState: TextFieldState = registrasiState.getState("password")
-    val namaLengkapState: TextFieldState = registrasiState.getState("nama_lengkap")
-    val jenisIdentitasState: ChoiceState = registrasiState.getState("jenis_identitas")
+    val namaLengkapState: TextFieldState = registrasiState.getState("namaLengkap")
+    val jenisIdentitasState: ChoiceState = registrasiState.getState("jenisIdentitas")
     val optJenisIdentitas = setOf("KTM", "KTP")
-    val noIdentitasState: TextFieldState = registrasiState.getState("no_identitas")
-    val jenisKelaminState: ChoiceState = registrasiState.getState("jenis_kelamin")
+    val noIdentitasState: TextFieldState = registrasiState.getState("nomorIdentitas")
+    val jenisKelaminState: ChoiceState = registrasiState.getState("jenisKelamin")
     val optJenisKelamin = setOf("Pria", "Wanita")
-    val alamatState: TextFieldState = registrasiState.getState("alamat")
+    val alamatState: TextFieldState = registrasiState.getState("alamatLengkap")
     val noHPState: TextFieldState = registrasiState.getState("no_hp")
     val institusiState: TextFieldState = registrasiState.getState("institusi")
 
@@ -219,8 +219,8 @@ fun RegistrasiScreen(authViewModel: AuthViewModel, navController: NavController)
                 Text(text = "Jenis Kelamin: ")
                 optJenisKelamin.forEach{
                     RadioButton(
-                        selected = jenisIdentitasState.value == it,
-                        onClick = { jenisIdentitasState.change(it) },
+                        selected = jenisKelaminState.value == it,
+                        onClick = { jenisKelaminState.change(it) },
                         colors = RadioButtonDefaults.colors(
                             selectedColor = Primary
                         ),
@@ -290,9 +290,6 @@ fun RegistrasiScreen(authViewModel: AuthViewModel, navController: NavController)
                 value = institusiState.value,
                 isError = institusiState.hasError,
                 onValueChange = { institusiState.change(it) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Phone,
-                ),
 //                leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "emailIcon") },
                 placeholder = { Text(text = "Institusi") },
                 colors = TextFieldDefaults.outlinedTextFieldColors(

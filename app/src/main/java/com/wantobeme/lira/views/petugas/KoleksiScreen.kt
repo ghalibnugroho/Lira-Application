@@ -107,17 +107,15 @@ fun KoleksiScreen(viewModel: KoleksiViewModel, navController: NavController){
                                 KoleksiKatalogItem(
                                     koleksi = it.result[item],
                                     onLongClickCard = {
-//                                        Toast.makeText(context,"${it.result[item].collectionId}",Toast.LENGTH_SHORT).show()
                                         index = item
-//                                        Toast.makeText(context,"${index}",Toast.LENGTH_SHORT).show()
-                                                      showDialog = true
+                                        showDialog = true
                                     },
                                     onClickIcon = {
-//                                        Toast.makeText(context, "${it.result[item].qrcode}", Toast.LENGTH_SHORT).show()
                                         navController.navigate(Screen.Petugas.Search.DetailKatalog.Koleksi.GenerateQR.route + "/${it.result[item].qrcode}")
                                     }
                                 )
                                 if(showDialog){
+                                    // jika status tidak sedang diipinjam
                                     if(it.result[index].status.toInt() == 1){
                                         AlertDialog(
                                             onDismissRequest = {

@@ -47,7 +47,7 @@ class SirkulasiLoanViewModel @AssistedInject constructor(
 
     fun getSirkulasiLoanMember(memberNo: String?) = viewModelScope.launch {
         _sirkulasiLoanResponse.value = Resource.Loading
-        delay(1000)
+//        delay(1000)
         val result = sirkulasiRepository.getCollectionLoansAnggota(memberNo!!)
         _sirkulasiLoanResponse.value = result
         Log.i("SirkulasiLoan Result", "$result")

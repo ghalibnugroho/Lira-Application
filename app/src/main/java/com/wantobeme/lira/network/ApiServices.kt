@@ -59,14 +59,20 @@ interface ApiServices {
     @DELETE("petugas/delete/koleksi/{collectionId}")
     suspend fun deleteKoleksi(@Path("collectionId") collectionId: String): KoleksiOperation
 
-    @GET("petugas/kodeQR/{QR}")
+    @GET("koleksi/kodeQR/{QR}")
     suspend fun getKodeQR(@Path("QR") kodeQR: String): QRCode
 
     @GET("petugas/daftarPresensi")
     suspend fun getAllDaftarPresensi(): RPresensi
 
     // Anggota
-    @GET("anggota/daftarPresensi/{memberNo}")
+    @GET("anggota/logPresensi/{memberNo}")
     suspend fun getPresensiByNomorAnggota(@Path("memberNo") memberNo: String): RPresensi
+
+    @GET("anggota/data/{memberNo}")
+    suspend fun getDataAnggota(@Path("memberNo") memberNo: String): Anggota
+
+    @GET("anggota/katalog/koleksi/kodeQr/{QR}")
+    suspend fun getKatalogByKodeQR(@Path("QR") kodeQR: String): Loaning
 
 }

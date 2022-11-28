@@ -1,6 +1,5 @@
 package com.wantobeme.lira.viewmodel
 
-import com.wantobeme.lira.viewmodel.guest.AuthViewModel
 import com.wantobeme.lira.viewmodel.guest.KatalogDetailViewModel
 import com.wantobeme.lira.viewmodel.petugas.KoleksiViewModel
 import com.wantobeme.lira.viewmodel.petugas.QRViewModel

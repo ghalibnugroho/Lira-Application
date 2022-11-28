@@ -73,12 +73,19 @@ fun PetugasNav(navController: NavHostController){
             arguments = listOf(navArgument(name = "kodeQR") {
                 type = NavType.StringType
             })){ entry ->
-            KoleksiQRGeneratorScreen(
-                qrViewModel = provideQRViewModel(kodeQR = entry.arguments?.getString("kodeQR"))
+            QRGeneratorScreen(
+                qrViewModel = provideQRViewModel(kodeQR = entry.arguments?.getString("kodeQR")),
+                navController = navController
             )
         }
         composable(Screen.Petugas.DaftarPresensi.route){
             DaftarPresensiScreen(hiltViewModel(), navController)
+        }
+        composable(Screen.Petugas.DaftarPresensi.GenerateQR.route){
+            QRGeneratorScreen(
+                qrViewModel = provideQRViewModel(kodeQR = "PerpustakaanUNIRA"),
+                navController = navController
+            )
         }
         composable(Screen.Petugas.Manage.route){
             ManageScreen(hiltViewModel(), hiltViewModel())

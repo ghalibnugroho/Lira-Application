@@ -28,8 +28,10 @@ import com.wantobeme.lira.model.Katalog
 import com.wantobeme.lira.viewmodel.guest.KatalogViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.wantobeme.lira.MainActivity
 import com.wantobeme.lira.views.utils.Resource
 import com.wantobeme.lira.views.utils.showProgressBar
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -37,7 +39,9 @@ fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
-    LaunchedEffect(key1 = currentRoute == Screen.Katalog.route){
+    val currentNav = navController.currentDestination?.route
+
+    LaunchedEffect(key1 = MainActivity::class){
         viewModel.jumpActivity()
         viewModel.getKatalogList()
     }
@@ -65,7 +69,7 @@ fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
                         ),
                         content = {
                             items(it.result.size){ item ->
-                                CardItem(
+                                KatalogCardItem(
                                     katalog = it.result[item],
                                     onClick = {
                                         navController.navigate(Screen.Katalog.DetailKatalog.route + "/${it.result[item].id}")
@@ -82,7 +86,7 @@ fun KatalogScreen(viewModel: KatalogViewModel, navController: NavController){
 
 // stateless
 @Composable
-fun CardItem(
+fun KatalogCardItem(
     katalog: Katalog,
     onClick: () -> Unit,
     modifier: Modifier = Modifier

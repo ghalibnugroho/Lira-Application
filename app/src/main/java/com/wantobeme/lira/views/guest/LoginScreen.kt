@@ -146,35 +146,27 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController){
                     }
                 )
             }
-
-
-            userToken.value?.let {
-                when(it){
-                    is Resource.Failure -> {
-                        Text(text = "${it.exception.message}")
-                    }
-                    Resource.Loading -> {
-                        showProgressBar()
-                    }
-                    is Resource.Success -> {
-                        LaunchedEffect(key1 = Unit){
-                            if (it.result.role == 1){
-                                context.startNewActivity(PetugasActivity::class.java)
-                            }else if(it.result.role == 2){
-                                context.startNewActivity(AnggotaActivity::class.java)
-                            }else{
-                                showAlertDialog.value = true
-                            }
+        }
+        userToken.value?.let {
+            when(it){
+                is Resource.Failure -> {
+                    Text(text = "${it.exception.message}")
+                }
+                Resource.Loading -> {
+                    showProgressBar()
+                }
+                is Resource.Success -> {
+                    LaunchedEffect(key1 = Unit){
+                        if (it.result.role == 1){
+                            context.startNewActivity(PetugasActivity::class.java)
+                        }else if(it.result.role == 2){
+                            context.startNewActivity(AnggotaActivity::class.java)
+                        }else{
+                            showAlertDialog.value = true
                         }
                     }
                 }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPreview(){
-
 }

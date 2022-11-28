@@ -2,13 +2,15 @@ package com.wantobeme.lira.model
 
 import com.google.gson.annotations.SerializedName
 
+
+// Response Koleksi
 data class RKoleksi(
     val title: String,
     val status: String,
     val message: String,
     val data: List<Koleksi>
 )
-
+// Petugas Page
 data class Koleksi(
 
     @field:SerializedName("catalogid")

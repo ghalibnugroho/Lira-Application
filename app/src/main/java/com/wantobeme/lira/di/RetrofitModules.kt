@@ -16,11 +16,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
 object Constant {
-    const val BASE_URL ="http://192.168.21.212:9090/"
+    const val BASE_URL ="http://192.168.36.212:9090/"
 }
 
 @InstallIn(SingletonComponent::class)
@@ -43,6 +44,8 @@ object RetrofitApi {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+            .connectTimeout(30, TimeUnit.MINUTES)
+            .readTimeout(30, TimeUnit.MINUTES)
             .build()
 
     @Singleton
@@ -50,7 +53,7 @@ object RetrofitApi {
     fun provideApplication(@ApplicationContext app: Context):   LiraApp{
         return app as LiraApp
     }
-
+    
     @Provides
     fun provideKatalogRepository(api: ApiServices): KatalogRepository {
         return KatalogRepository(api = api)

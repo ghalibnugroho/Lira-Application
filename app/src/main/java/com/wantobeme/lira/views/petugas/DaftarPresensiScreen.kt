@@ -2,13 +2,13 @@ package com.wantobeme.lira.views.petugas
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.wantobeme.lira.R
 import com.wantobeme.lira.model.Presensi
 import com.wantobeme.lira.model.SirkulasiLoanItems
 import com.wantobeme.lira.viewmodel.petugas.DaftarPresensiViewModel
@@ -59,9 +62,36 @@ fun DaftarPresensiScreen(presensiViewModel: DaftarPresensiViewModel, navControll
                         Text(text = "Belum ada yang melakukan presensi.")
                     }
                 }else{
-                    LazyColumn(){
-                        items(it.result.size){items ->
-                            CardPresensi(data = it.result[items])
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        TextButton(onClick = {
+                            navController.navigate(Screen.Petugas.DaftarPresensi.GenerateQR.route)
+                        }){
+                            Text(text = "Generate",
+                                style = TextStyle(
+                                    fontWeight = FontWeight(400),
+                                    fontSize = 20.sp
+                                )
+                            )
+                            Icon(
+                                painter = rememberAsyncImagePainter(
+                                    model = ImageRequest.Builder(context = LocalContext.current)
+                                        .crossfade(true)
+                                        .data(R.drawable.ic_baseline_qr_code_2_24)
+                                        .build()
+                                ),
+                                contentDescription = "QR Icon"
+                            )
+                        }
+                        LazyColumn(){
+                            items(it.result.size){items ->
+                                CardPresensi(data = it.result[items])
+                            }
                         }
                     }
                 }
@@ -78,7 +108,7 @@ fun CardPresensi(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(10.dp)
     ) {
         Column(
             modifier = Modifier.padding(10.dp)

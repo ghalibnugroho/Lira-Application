@@ -51,5 +51,9 @@ class QRViewModel @AssistedInject constructor(
         Log.i("QR Result", "${_kodeQRFlow.value }}")
     }
 
+    fun getParam(): String?{
+        return kodeQR
+    }
+
 
 }

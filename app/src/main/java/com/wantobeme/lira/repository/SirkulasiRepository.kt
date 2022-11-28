@@ -1,8 +1,6 @@
 package com.wantobeme.lira.repository
 
-import com.wantobeme.lira.model.SirkulasiAnggota
-import com.wantobeme.lira.model.SirkulasiLoan
-import com.wantobeme.lira.model.SirkulasiLoanItems
+import com.wantobeme.lira.model.*
 import com.wantobeme.lira.network.ApiServices
 import com.wantobeme.lira.views.utils.Resource
 import java.util.regex.Pattern
@@ -43,4 +41,13 @@ class SirkulasiRepository @Inject constructor(
             Resource.Failure(exception = exception)
         }
     }
+
+    object RuntimeCollectionLoanBusket{
+
+        private val collectionLoanBustket = mutableListOf<Loaning>()
+
+
+    }
+
+
 }

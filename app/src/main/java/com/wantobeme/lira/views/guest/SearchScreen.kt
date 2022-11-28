@@ -72,7 +72,7 @@ fun SearchScreen(viewModel: KatalogViewModel, navController:NavController){
                 ),
                 content = {
                     items(search.data.size){ item ->
-                        CardItem(
+                        KatalogCardItem(
                             katalog = search.data[item],
                             onClick = {
                                 navController.navigate(Screen.Katalog.DetailKatalog.route + "/${search.data[item].id}")

@@ -8,6 +8,7 @@ import com.dsc.form_builder.ChoiceState
 import com.dsc.form_builder.FormState
 import com.dsc.form_builder.TextFieldState
 import com.dsc.form_builder.Validators
+import com.wantobeme.lira.model.Anggota
 import com.wantobeme.lira.model.Guest
 import com.wantobeme.lira.model.GuestRegistrasi
 import com.wantobeme.lira.repository.AuthRepository
@@ -30,6 +31,11 @@ class AuthViewModel @Inject constructor(
 
     private val _guestRegistrasi = MutableStateFlow<Resource<GuestRegistrasi>?>(null)
     val guestRegistrasi: StateFlow<Resource<GuestRegistrasi>?> = _guestRegistrasi
+
+    var myMemberNo by mutableStateOf(Guest())
+
+    private val _dataAnggota = MutableStateFlow<Resource<Anggota>?>(null)
+    val dataAnggota: StateFlow<Resource<Anggota>?> = _dataAnggota
 
     // login
     val loginFormState = FormState(
@@ -66,31 +72,31 @@ class AuthViewModel @Inject constructor(
                 )
             ),
             TextFieldState(
-                name = "nama_lengkap",
+                name = "namaLengkap",
                 validators = listOf(
                     Validators.Required()
                 )
             ),
             ChoiceState(
-                name = "jenis_identitas",
+                name = "jenisIdentitas",
                 validators = listOf(
                     Validators.Required()
                 ),
             ),
             TextFieldState(
-                name = "no_identitas",
+                name = "nomorIdentitas",
                 validators = listOf(
                     Validators.Required()
                 )
             ),
             ChoiceState(
-                name = "jenis_kelamin",
+                name = "jenisKelamin",
                 validators = listOf(
                     Validators.Required()
                 )
             ),
             TextFieldState(
-                name = "alamat",
+                name = "alamatLengkap",
                 validators = listOf(
                     Validators.Required()
                 )
@@ -127,6 +133,23 @@ class AuthViewModel @Inject constructor(
 
     fun logout()= viewModelScope.launch{
         authRepository.logout()
+    }
+
+    fun getMemberNo() : Guest {
+        viewModelScope.launch {
+            authRepository.getDataUser().collect(){ preferences ->
+                if (preferences != null) {
+                    myMemberNo = preferences
+                }
+            }
+        }
+        return myMemberNo
+    }
+
+    fun getDataAnggota(memberNo: String) = viewModelScope.launch{
+        _dataAnggota.value = Resource.Loading
+        val result = authRepository.getDataAnggota(memberNo)
+        _dataAnggota.value = result
     }
 
 }

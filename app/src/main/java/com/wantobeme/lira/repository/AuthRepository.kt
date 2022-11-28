@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.auth0.android.jwt.JWT
+import com.wantobeme.lira.model.Anggota
 import com.wantobeme.lira.model.Guest
 import com.wantobeme.lira.model.GuestRegistrasi
 import com.wantobeme.lira.network.ApiServices
@@ -53,7 +54,7 @@ class AuthRepository @Inject constructor(
         }
     }
     /*
-        saveDatauser to DataStore \\ if want to delete all preferences use preferences.clear()
+        saveDatauser to DataStore \\ if want to delete all preferences use preferences.clear() or set to role=0 and all stringkey to ""
      */
     suspend fun saveDataUser(guest: Guest){
         context.dataStore.edit { preferences ->
@@ -74,6 +75,15 @@ class AuthRepository @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    suspend fun getDataAnggota(memberNo: String): Resource<Anggota>{
+        return try{
+            val response = api.getDataAnggota(memberNo)
+            Resource.Success(response)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
         }
     }
 

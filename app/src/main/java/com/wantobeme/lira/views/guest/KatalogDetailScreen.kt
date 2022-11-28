@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.wantobeme.lira.MainActivity
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.KatalogDetail
 import com.wantobeme.lira.ui.theme.vLightGray
@@ -58,10 +59,10 @@ fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavCon
 
     var showButtonPetugas by remember{ mutableStateOf(false) }
 
-    val current_Args = navController.currentDestination?.parent?.startDestDisplayName
-    Log.i("Katalog Detail - Arguments", "${current_Args}")
+    val current_parrent = navController.currentDestination?.parent?.startDestDisplayName
+    Log.i("Katalog Detail - Arguments", "${current_parrent}")
 
-    if(current_Args!!.contains("sirkulasi")){
+    if(current_parrent!!.contains("sirkulasi")){
         showButtonPetugas = true
     }
 
@@ -76,15 +77,40 @@ fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavCon
             }
             is Resource.Success -> {
                 DetailKatalogItem(katalogDetail = it.result, showButtonPetugas, navController)
-                BackHandler {
-                    navController.navigate(Screen.Petugas.Search.route){
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                if(current_parrent == "katalog"){
+                    BackHandler {
+                        navController.navigate(Screen.Anggota.Katalog.route){
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
                         }
                     }
                 }
+                else if(current_parrent == "sirkulasi"){
+                    BackHandler {
+                        navController.navigate(Screen.Petugas.Search.route){
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    BackHandler {
+                        navController.navigate(Screen.Katalog.route){
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
