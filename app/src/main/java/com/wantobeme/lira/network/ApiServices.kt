@@ -34,7 +34,7 @@ interface ApiServices {
         @Field("jenis_kelamin") jenisKelamin: String,
         @Field("no_hp") no_hp: String,
         @Field("institusi") institusi: String
-    ): GuestRegistrasi
+    ): StatusMessage
     // Petugas
     @GET("petugas/getAllAnggota")
     suspend fun getAnggota():RSirkulasiAnggota
@@ -54,16 +54,23 @@ interface ApiServices {
         @Field("katalogId") katalogId: String,
         @Field("nomorQRCode") nomorQRCode: String,
         @Field("nomorKoleksi") nomorKoleksi: String
-    ): KoleksiOperation
+    ): StatusMessage
 
     @DELETE("petugas/delete/koleksi/{collectionId}")
-    suspend fun deleteKoleksi(@Path("collectionId") collectionId: String): KoleksiOperation
+    suspend fun deleteKoleksi(@Path("collectionId") collectionId: String): StatusMessage
 
     @GET("koleksi/kodeQR/{QR}")
     suspend fun getKodeQR(@Path("QR") kodeQR: String): QRCode
 
     @GET("petugas/daftarPresensi")
     suspend fun getAllDaftarPresensi(): RPresensi
+
+    @DELETE("petugas/abortPeminjaman/{collectionLoanId}/{collectionId}")
+    suspend fun abortPeminjaman(
+        @Path("collectionLoanId") collectionloanId: String,
+        @Path("collectionId") collectionId: String
+    ): StatusMessage
+
 
     // Anggota
     @GET("anggota/logPresensi/{memberNo}")
@@ -72,7 +79,14 @@ interface ApiServices {
     @GET("anggota/data/{memberNo}")
     suspend fun getDataAnggota(@Path("memberNo") memberNo: String): Anggota
 
-    @GET("anggota/katalog/koleksi/kodeQr/{QR}")
+    @GET("anggota/katalog/koleksi/kodeQR/{QR}")
     suspend fun getKatalogByKodeQR(@Path("QR") kodeQR: String): Loaning
+
+    @FormUrlEncoded
+    @POST("anggota/pinjambuku")
+    suspend fun pinjamBuku(
+        @Field("collectionId") collectionId: String,
+        @Field("memberNo") memberNo: String
+    ): StatusMessage
 
 }

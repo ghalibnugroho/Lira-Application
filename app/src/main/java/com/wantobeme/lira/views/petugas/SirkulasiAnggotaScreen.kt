@@ -99,22 +99,42 @@ fun SirkulasiAnggotaItem(
         Row(
             modifier = Modifier.padding(20.dp, 12.dp)
         ){
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(context = LocalContext.current)
-                        .crossfade(true)
-                        .data(R.drawable.ic_baseline_account_circle_green_24)
-                        .build(),
-                    filterQuality = FilterQuality.High,
-                    placeholder = painterResource(id = R.drawable.ic_baseline_account_circle_green_24),
-                ),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(55.dp)
-                    .height(55.dp)
-                    .clip(shape = RoundedCornerShape(3.dp)),
-                contentScale = ContentScale.Crop
-            )
+            if(sirkulasiAnggota.loanCount!! > 0){
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(context = LocalContext.current)
+                            .crossfade(true)
+                            .data(R.drawable.ic_baseline_account_circle_green_24)
+                            .build(),
+                        filterQuality = FilterQuality.High,
+                        placeholder = painterResource(id = R.drawable.ic_baseline_account_circle_green_24),
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(55.dp)
+                        .height(55.dp)
+                        .clip(shape = RoundedCornerShape(3.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }else{
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(context = LocalContext.current)
+                            .crossfade(true)
+                            .data(R.drawable.ic_baseline_account_circle_24)
+                            .build(),
+                        filterQuality = FilterQuality.High,
+                        placeholder = painterResource(id = R.drawable.ic_baseline_account_circle_green_24),
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(55.dp)
+                        .height(55.dp)
+                        .clip(shape = RoundedCornerShape(3.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
             Spacer(modifier = Modifier.size(20.dp))
             Column(
                 modifier = Modifier
@@ -146,7 +166,8 @@ fun prevSirkulasiAnggotaItem(){
     val anggota  =
         SirkulasiAnggota(
         namaLengkap = "Muhammad Ghalib Nugroho",
-        nomorIdentitas = "165150201111111"
+        nomorIdentitas = "165150201111111",
+        loanCount = 0
     )
     SirkulasiAnggotaItem(sirkulasiAnggota = anggota, onClick = {})
 }

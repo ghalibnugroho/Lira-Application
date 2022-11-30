@@ -8,11 +8,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.wantobeme.lira.views.Screen
 import com.wantobeme.lira.views.anggota.ScannerScreen
 
 @Composable
 fun QRNav(navController: NavHostController){
+    val uri = "https://example.com"
     NavHost(navController = navController, startDestination = Screen.Anggota.QRScanner.route){
         composable(Screen.Anggota.QRScanner.route){
             ScannerScreen(navController)
@@ -20,7 +22,8 @@ fun QRNav(navController: NavHostController){
         composable(Screen.Anggota.QRScanner.Koleksi.route + "/{kodeQR}",
             arguments = listOf(navArgument(name = "kodeQR") {
                 type = NavType.StringType
-            })){ entry ->
+            }),
+        ){ entry ->
             AfterScanScreen(hiltViewModel(), navController = navController)
         }
     }

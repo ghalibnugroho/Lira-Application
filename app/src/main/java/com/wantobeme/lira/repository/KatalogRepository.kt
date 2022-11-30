@@ -44,6 +44,20 @@ class KatalogRepository @Inject constructor(
         }
     }
 
+    suspend fun getKatalogByKodeQR(kodeQR: String): Resource<Loaning>{
+        return try{
+            val data = api.getKatalogByKodeQR(kodeQR)
+            if (data.title.contains("/")){
+                val arr = Pattern.compile("/").split(data.title)
+                data.title = arr[0]
+            }
+            if(data.publishLocation.isBlank()) data.publishLocation = "-"
+            Resource.Success(result = data)
+        }catch (exception: Exception){
+            Resource.Failure(exception = exception)
+        }
+    }
+
     suspend fun getKoleksiKatalog(id: String): Resource<List<Koleksi>>{
         return try{
             val data = api.getKoleksiKatalog(id).data
@@ -53,7 +67,7 @@ class KatalogRepository @Inject constructor(
         }
     }
 
-    suspend fun addKatalogCollection(katalogId: String, koleksiState: KoleksiState): Resource<KoleksiOperation>{
+    suspend fun addKatalogCollection(katalogId: String, koleksiState: KoleksiState): Resource<StatusMessage>{
         return try{
             val data = api.addCollection(katalogId, koleksiState.nomorQRCode, koleksiState.nomorKoleksi)
             Resource.Success(result = data)
@@ -62,7 +76,7 @@ class KatalogRepository @Inject constructor(
         }
     }
 
-    suspend fun deleteKatalogColletion(collectionId: String): Resource<KoleksiOperation>{
+    suspend fun deleteKatalogColletion(collectionId: String): Resource<StatusMessage>{
         return try{
             val data = api.deleteKoleksi(collectionId)
             Resource.Success(data)

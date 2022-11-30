@@ -35,6 +35,23 @@ class SirkulasiRepository @Inject constructor(
                     val arr = Pattern.compile("/").split(it.judul)
                     it.judul = arr[0]
                 }
+                if(it.tanggalPinjam.contains(" ")){
+                    val arr = Pattern.compile(" ").split(it.tanggalPinjam)
+                    it.tanggalPinjam = arr[0]
+                }
+                if(it.tanggalDikembalikan==null){
+                    it.tanggalDikembalikan = "-"
+                }else{
+                    if(it.tanggalDikembalikan?.contains(" ") == true){
+                        val arr = Pattern.compile(" ").split(it.tanggalDikembalikan)
+                        it.tanggalDikembalikan = arr[0]
+                    }
+                }
+
+                if(it.tanggalBatasPinjam.contains(" ")){
+                    val arr = Pattern.compile(" ").split(it.tanggalBatasPinjam)
+                    it.tanggalBatasPinjam = arr[0]
+                }
             }
             Resource.Success(result = result)
         }catch (exception: Exception){
@@ -42,11 +59,30 @@ class SirkulasiRepository @Inject constructor(
         }
     }
 
-    object RuntimeCollectionLoanBusket{
+    suspend fun pinjamBuku(collectionId: String, memberNo: String): Resource<StatusMessage>{
+        return try{
+            val result = api.pinjamBuku(collectionId, memberNo)
+            Resource.Success(result = result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
 
-        private val collectionLoanBustket = mutableListOf<Loaning>()
+//    suspend fun validasiPeminjaman(collectionId: String): Resource<StatusMessage>{
+//        return try{
+//            Resource.Success
+//        }catch (exception: Exception){
+//            Resource.Failure(exception)
+//        }
+//    }
 
-
+    suspend fun abortPeminjaman(collectionloanId: String, collectionId: String): Resource<StatusMessage>{
+        return try{
+            val result = api.abortPeminjaman(collectionloanId, collectionId)
+            Resource.Success(result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
     }
 
 

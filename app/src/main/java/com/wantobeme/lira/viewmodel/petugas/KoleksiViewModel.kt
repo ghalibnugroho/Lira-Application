@@ -8,7 +8,7 @@ import com.dsc.form_builder.FormState
 import com.dsc.form_builder.TextFieldState
 import com.dsc.form_builder.Validators
 import com.wantobeme.lira.model.Koleksi
-import com.wantobeme.lira.model.KoleksiOperation
+import com.wantobeme.lira.model.StatusMessage
 import com.wantobeme.lira.repository.KatalogRepository
 import com.wantobeme.lira.views.uiState.KoleksiState
 import com.wantobeme.lira.views.utils.Resource
@@ -28,11 +28,11 @@ class KoleksiViewModel @AssistedInject constructor(
     private val _koleksiKatalog = MutableStateFlow<Resource<List<Koleksi>>?>(null)
     val koleksiKatalog: StateFlow<Resource<List<Koleksi>>?> = _koleksiKatalog
 
-    private val _addKoleksiFlow = MutableStateFlow<Resource<KoleksiOperation>?>(null)
-    val addKoleksiFlow: StateFlow<Resource<KoleksiOperation>?> = _addKoleksiFlow
+    private val _addKoleksiFlow = MutableStateFlow<Resource<StatusMessage>?>(null)
+    val addKoleksiFlow: StateFlow<Resource<StatusMessage>?> = _addKoleksiFlow
 
-    private val _deleteKoleksiFlow = MutableStateFlow<Resource<KoleksiOperation>?>(null)
-    val deleteKoleksiFlow: StateFlow<Resource<KoleksiOperation>?> = _deleteKoleksiFlow
+    private val _deleteKoleksiFlow = MutableStateFlow<Resource<StatusMessage>?>(null)
+    val deleteKoleksiFlow: StateFlow<Resource<StatusMessage>?> = _deleteKoleksiFlow
 
     val addKoleksiFormState = FormState(
         fields = listOf(

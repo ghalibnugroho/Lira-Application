@@ -76,6 +76,7 @@ fun SirkulasiLoanScreen(viewModel: SirkulasiLoanViewModel, navController: NavCon
                         items(it.result.size){ item ->
                             SirkulasiLoanCard(
                                 sirkulasiLoan = it.result[item],
+                                index = item,
                                 onClick = {
                                     navController.navigate(Screen.Petugas.Sirkulasi.Loan.Item.route + "/${it.result[item].id}")
                                 }
@@ -91,6 +92,7 @@ fun SirkulasiLoanScreen(viewModel: SirkulasiLoanViewModel, navController: NavCon
 @Composable
 fun SirkulasiLoanCard(
     sirkulasiLoan: SirkulasiLoan,
+    index: Int,
     onClick: () -> Unit
 ){
     Card(
@@ -102,13 +104,28 @@ fun SirkulasiLoanCard(
             }
     ) {
         Column() {
-            Text(
-                text = "${sirkulasiLoan.id}",
-                style = TextStyle(
-                    fontSize = 8.sp,
-                    fontWeight = FontWeight.Light
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Text(
+                    text = "${sirkulasiLoan.id}",
+                    style = TextStyle(
+                        fontSize = 8.sp,
+                        fontWeight = FontWeight.Light
+                    )
                 )
-            )
+                if(index==0){
+                    Text(
+                        text = "Latest",
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
             Row(
                 modifier = Modifier.padding(20.dp, 12.dp)
             ){
@@ -174,6 +191,6 @@ fun prevSirkulasiLoanCard(){
             jumlahBuku = 2,
             tanggalPinjam = "22-12-2022"
         )
-    SirkulasiLoanCard(sirkulasiLoan = loan, onClick = {})
+    SirkulasiLoanCard(sirkulasiLoan = loan, index = 1, onClick = {})
 }
 

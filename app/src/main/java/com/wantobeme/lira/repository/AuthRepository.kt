@@ -11,7 +11,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.auth0.android.jwt.JWT
 import com.wantobeme.lira.model.Anggota
 import com.wantobeme.lira.model.Guest
-import com.wantobeme.lira.model.GuestRegistrasi
+import com.wantobeme.lira.model.StatusMessage
 import com.wantobeme.lira.network.ApiServices
 import com.wantobeme.lira.views.uiState.RegistrasiState
 import com.wantobeme.lira.views.utils.Resource
@@ -78,6 +78,10 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    suspend fun addDataUser(data: List<Guest>){
+        context.dataStore.edit {  }
+    }
+
     suspend fun getDataAnggota(memberNo: String): Resource<Anggota>{
         return try{
             val response = api.getDataAnggota(memberNo)
@@ -87,7 +91,7 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    suspend fun registrasi(registrasiState: RegistrasiState): Resource<GuestRegistrasi>{
+    suspend fun registrasi(registrasiState: RegistrasiState): Resource<StatusMessage>{
         return try{
             val response = api.registrasi(
                 email = registrasiState.email,

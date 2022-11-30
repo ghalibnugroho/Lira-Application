@@ -5,21 +5,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,8 +27,10 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.wantobeme.lira.R
 import com.wantobeme.lira.model.SirkulasiLoanItems
+import com.wantobeme.lira.ui.theme.Primary
 import com.wantobeme.lira.viewmodel.ViewModelFactoryProvider
 import com.wantobeme.lira.viewmodel.petugas.SirkulasiLoanItemsViewModel
+import com.wantobeme.lira.views.Screen
 import com.wantobeme.lira.views.utils.Resource
 import com.wantobeme.lira.views.utils.showProgressBar
 import dagger.hilt.android.EntryPointAccessors
@@ -49,6 +49,9 @@ fun provideSirkulasiLoanItemsViewModel(collectionId: String?): SirkulasiLoanItem
 fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navController: NavController){
 
     val loanItems = viewModel.sirkulasiLoanItemsResponse.collectAsState()
+
+    val deleteResponse = viewModel.deleteResponse.collectAsState()
+
     loanItems.value?.let {
         when(it){
             is Resource.Failure -> {
@@ -84,7 +87,8 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
 //                                modifier = Modifier.padding(start = 0.dp)
                             ) {
                                 Row(
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(bottom = 5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ){
@@ -104,7 +108,8 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                     )
                                 }
                                 Row(
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(bottom = 5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ){
@@ -124,7 +129,8 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                     )
                                 }
                                 Row(
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(bottom = 5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ){
@@ -144,7 +150,8 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                     )
                                 }
                                 Row(
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(bottom = 5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
@@ -174,10 +181,59 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                     }
                                 }
                             }
+//
                             Spacer(modifier = Modifier.size(10.dp))
-                            LazyColumn() {
+                            LazyColumn(
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 items(it.result.size){ item ->
-                                    DetailSirkulasiLoanItems(data = it.result[item])
+                                    DetailSirkulasiLoanItems(
+                                        data = it.result[item],
+                                        petugas = true,
+                                        finish = {
+
+                                        },
+                                        extend = {}
+                                    )
+                                }
+                            }
+                            if(it.result[0].status.equals("Waiting")){
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                ){
+                                    Button(
+                                        modifier = Modifier
+                                            .width(120.dp)
+                                            .height(50.dp)
+                                            .padding(top = 10.dp),
+                                        onClick = {
+                                            // Accept Peminjaman, Update Status to Loaning
+                                            it.result.forEach{
+
+                                            }
+                                        },
+                                        colors = ButtonDefaults.buttonColors(
+                                            backgroundColor = Primary
+                                        )
+                                    ) {
+                                        Text(text = "Accept", color = Color.White)
+                                    }
+                                    OutlinedButton(
+                                        modifier = Modifier
+                                            .width(120.dp)
+                                            .height(50.dp)
+                                            .padding(top = 10.dp),
+                                        onClick = {
+                                            // reject peminjaman, Delete collectionLoan dan collectionLoanItems
+                                            it.result.forEach{
+                                                viewModel.abortPeminjaman(it.collectionLoanId, it.collectionId)
+                                            }
+                                            navController.navigate(Screen.Petugas.Sirkulasi.route)
+                                        },
+                                    ) {
+                                        Text(text = "Abort", color = Color.Red)
+                                    }
                                 }
                             }
                         }
@@ -188,11 +244,14 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun DetailSirkulasiLoanItems(
-//    data: SirkulasiLoanItems,
-    @PreviewParameter(SampleLoanItemsProvider::class) data: SirkulasiLoanItems
+    data: SirkulasiLoanItems,
+    petugas: Boolean,
+    finish: () -> Unit,
+    extend: () -> Unit
+//    @PreviewParameter(SampleLoanItemsProvider::class) data: SirkulasiLoanItems
 ){
     Card(
         modifier = Modifier
@@ -303,21 +362,138 @@ fun DetailSirkulasiLoanItems(
                             )
                         )
                     }
+                    if(data.tanggalDikembalikan!="-"){
+                        Row() {
+                            Text(
+                                text = "return: ",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Thin
+                                )
+                            )
+                            Text(
+                                text = data.tanggalDikembalikan!!,
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
+                    }
+                    else if(!data.status.equals("Return")){
+                        Row() {
+                            Text(
+                                text = "Status: ",
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Thin
+                                )
+                            )
+                            Text(
+                                text = data.status,
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
+                    }
                 }
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.ExtraBold
-                    )
-                )
+            if(petugas){
+                if(data.status.equals("Loaning")){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                        )
+                        Button(
+                            modifier = Modifier
+                                .width(120.dp)
+                                .height(35.dp),
+                            onClick = {
+                                // update status to return
+                                finish.invoke()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Primary
+                            )
+                        ) {
+                            Text(text = "Finish", color = Color.White)
+                        }
+                    }
+                }else{
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        Text(
+                            text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                        )
+                    }
+                }
+            }else{
+                if(data.status.equals("Loaning")){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                        )
+                        Button(
+                            modifier = Modifier
+                                .width(120.dp)
+                                .height(35.dp),
+                            onClick = {
+
+                                // Perpanjang Peminjaman
+                                finish.invoke()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Primary
+                            )
+                        ) {
+                            Text(text = "Extend", color = Color.White)
+                        }
+                    }
+                }
+                else{
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        Text(
+                            text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                        )
+                    }
+                }
             }
         }
 

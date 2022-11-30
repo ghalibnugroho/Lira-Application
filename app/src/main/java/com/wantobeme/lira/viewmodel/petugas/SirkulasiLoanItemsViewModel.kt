@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.SirkulasiLoan
 import com.wantobeme.lira.model.SirkulasiLoanItems
+import com.wantobeme.lira.model.StatusMessage
 import com.wantobeme.lira.repository.AuthRepository
 import com.wantobeme.lira.repository.SirkulasiRepository
 import com.wantobeme.lira.views.utils.Resource
@@ -24,6 +25,9 @@ class SirkulasiLoanItemsViewModel @AssistedInject constructor(
 
     private val _sirkulasiLoanItemsResponse = MutableStateFlow<Resource<List<SirkulasiLoanItems>>?>(null)
     val sirkulasiLoanItemsResponse: StateFlow<Resource<List<SirkulasiLoanItems>>?> = _sirkulasiLoanItemsResponse
+
+    private val _deleteResponse = MutableStateFlow<Resource<StatusMessage>?>(null)
+    val deleteResponse: StateFlow<Resource<StatusMessage>?> = _deleteResponse
 
     init {
         getSirkulasiLoanItems(collectionId)
@@ -44,11 +48,16 @@ class SirkulasiLoanItemsViewModel @AssistedInject constructor(
             }
     }
 
-    fun getSirkulasiLoanItems(collectionId: String?) = viewModelScope.launch {
+    fun getSirkulasiLoanItems(collectionLoanId: String?) = viewModelScope.launch {
         _sirkulasiLoanItemsResponse.value = Resource.Loading
-        val result = sirkulasiRepository.getCollectionLoanItemsAnggota(collectionId!!)
+        val result = sirkulasiRepository.getCollectionLoanItemsAnggota(collectionLoanId!!)
         _sirkulasiLoanItemsResponse.value = result
         Log.i("SirkulasiLoan Result", "$result")
         Log.i("SirkulasiLoan State", "${_sirkulasiLoanItemsResponse.value}")
+    }
+
+    fun abortPeminjaman(collectionLoanId: String, collectionId: String) = viewModelScope.launch {
+        sirkulasiRepository.abortPeminjaman(collectionLoanId, collectionId)
+//        getSirkulasiLoanItems(collectionLoanId)
     }
 }

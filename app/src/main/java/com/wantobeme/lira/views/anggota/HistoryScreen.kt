@@ -48,6 +48,7 @@ fun HistoryLoanScreen(historyViewModel: HistoryViewModel, navController: NavCont
                         items(it.result.size){ item ->
                             SirkulasiLoanCard(
                                 sirkulasiLoan = it.result[item],
+                                index = item,
                                 onClick = {
                                     navController.navigate(Screen.Anggota.HistoryLoan.Item.route + "/${it.result[item].id}")
                                 }

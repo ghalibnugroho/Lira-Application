@@ -148,7 +148,7 @@ fun KoleksiScreen(viewModel: KoleksiViewModel, navController: NavController){
                                                 showDialog = false
                                             },
                                             title = { Text(text = "Delete") },
-                                            text = { Text(text = "Koleksi ID ${it.result[index].collectionId} tidak dapat dihapus!") },
+                                            text = { Text(text = "Koleksi ID ${it.result[index].collectionId} tidak dapat dihapus! (Buku Sedang diolah/dipinjam)") },
                                             confirmButton = {
                                                 Button(onClick = {
                                                     showDialog = false

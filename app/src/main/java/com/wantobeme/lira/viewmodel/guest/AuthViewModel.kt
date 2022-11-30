@@ -10,7 +10,7 @@ import com.dsc.form_builder.TextFieldState
 import com.dsc.form_builder.Validators
 import com.wantobeme.lira.model.Anggota
 import com.wantobeme.lira.model.Guest
-import com.wantobeme.lira.model.GuestRegistrasi
+import com.wantobeme.lira.model.StatusMessage
 import com.wantobeme.lira.repository.AuthRepository
 import com.wantobeme.lira.views.uiState.LoginState
 import com.wantobeme.lira.views.uiState.RegistrasiState
@@ -29,8 +29,8 @@ class AuthViewModel @Inject constructor(
     private val _guestToken = MutableStateFlow<Resource<Guest>?>(null)
     val guestToken: StateFlow<Resource<Guest>?> = _guestToken
 
-    private val _guestRegistrasi = MutableStateFlow<Resource<GuestRegistrasi>?>(null)
-    val guestRegistrasi: StateFlow<Resource<GuestRegistrasi>?> = _guestRegistrasi
+    private val _guestRegistrasi = MutableStateFlow<Resource<StatusMessage>?>(null)
+    val guestRegistrasi: StateFlow<Resource<StatusMessage>?> = _guestRegistrasi
 
     var myMemberNo by mutableStateOf(Guest())
 

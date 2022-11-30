@@ -4,7 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 // petugas
 
-/*  Data yang akan ditampilkan pada DashboardScreen  */
+/*
+*  Data yang akan ditampilkan pada DashboardScreen
+*  ||
+*  History Peminjaman
+*
+* */
 data class RSirkulasiAnggota(
     val title: String,
     val status: String,
@@ -31,7 +36,10 @@ data class SirkulasiAnggota(
     val nomorIdentitas: String,
 
     @field:SerializedName("fullName")
-    val namaLengkap: String
+    val namaLengkap: String,
+
+    @field:SerializedName("loan")
+    val loanCount: Int?
 )
 
 data class SirkulasiLoan(
@@ -64,13 +72,13 @@ data class SirkulasiLoanItems(
     val collectionLoanId: String,
 
     @field:SerializedName("loandate")
-    val tanggalPinjam: String,
+    var tanggalPinjam: String,
 
     @field:SerializedName("duedate")
-    val tanggalBatasPinjam: String,
+    var tanggalBatasPinjam: String,
 
     @field:SerializedName("actualreturn")
-    val tanggalDikembalikan: String,
+    var tanggalDikembalikan: String? = null,
 
     @field:SerializedName("loanstatus")
     val status: String,

@@ -56,7 +56,14 @@ fun HistoryDetailScreen(historyViewModel: HistoryViewModel, navController: NavCo
                             Spacer(modifier = Modifier.size(25.dp))
                             LazyColumn() {
                                 items(it.result.size){ item ->
-                                    DetailSirkulasiLoanItems(data = it.result[item])
+                                    DetailSirkulasiLoanItems(
+                                        data = it.result[item],
+                                        petugas = false,
+                                        finish = {},
+                                        extend = {
+
+                                        }
+                                    )
                                 }
                             }
                         }

@@ -2,21 +2,21 @@ package com.wantobeme.lira.model
 
 import com.google.gson.annotations.SerializedName
 
-// Response KatalogPage
+// Response KatalogScreen
 data class RKatalog(
 	val title: String,
 	val status: String,
 	val message: String,
 	val data: List<Katalog>
 )
-// Response KatalogDetailPage
+// Response KatalogDetailScreen
 data class RKatalogDetail(
 	val title: String,
 	val status: String,
 	val message: String,
 	val data: KatalogDetail
 )
-// Guest Page
+// Guest && Anggota Screen
 data class Katalog(
 
 	@field:SerializedName("id")
@@ -42,7 +42,7 @@ data class Katalog(
 
 )
 
-// Guest Page
+// Guest && Anggota Screen
 data class KatalogDetail(
 
 	@field:SerializedName("id")

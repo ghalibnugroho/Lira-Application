@@ -10,7 +10,7 @@ data class RKoleksi(
     val message: String,
     val data: List<Koleksi>
 )
-// Petugas Page
+// Petugas Koleksi Screen
 data class Koleksi(
 
     @field:SerializedName("catalogid")
@@ -33,11 +33,6 @@ data class Koleksi(
 
     @field:SerializedName("tanggalPengadaan")
     var tanggalPengadaan: String
-)
-
-data class KoleksiOperation(
-    val status: Int,
-    val message: String
 )
 
 data class QRCode(

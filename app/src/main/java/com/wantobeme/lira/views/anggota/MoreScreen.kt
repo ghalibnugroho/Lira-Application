@@ -54,7 +54,7 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "My Data",
+                        Text(text = "Profile",
                             style = TextStyle(
                                 fontFamily = ranchoFamily,
                                 fontWeight = FontWeight(400),

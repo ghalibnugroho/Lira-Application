@@ -11,28 +11,40 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.common.util.concurrent.ListenableFuture
+import com.wantobeme.lira.R
+import com.wantobeme.lira.ui.theme.ranchoFamily
 import com.wantobeme.lira.views.Screen
 import com.wantobeme.lira.views.anggota.qrscanner.QRAnalyzer
 import com.wantobeme.lira.views.utils.startNewActivity
@@ -117,6 +129,63 @@ fun ScannerScreen(navController: NavController) {
         }
     )
         CameraPreview(navController)
+        Box(){
+            Column(
+                modifier = Modifier.fillMaxHeight()
+                    .padding(top=55.dp, bottom = 60.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ){
+//                Spacer(modifier = Modifier.size(50.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(text = "Literasi Raden",
+                        style = TextStyle(
+                            fontFamily = ranchoFamily,
+                            fontWeight = FontWeight(400),
+                            fontSize = 25.sp
+                        )
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ){
+//                    Icon(
+//                        painter = rememberAsyncImagePainter(
+//                            model = ImageRequest.Builder(context = LocalContext.current)
+//                                .crossfade(true)
+//                                .data(R.drawable.ic_baseline_qr_code_2_24)
+//                                .build()
+//                        ),
+//                        contentDescription = "QR Icon",
+//                    )
+                    Text(text = "scanning...",
+                        style = TextStyle(
+//                            fontFamily = ranchoFamily,
+                            fontWeight = FontWeight(400),
+                            fontSize = 17.sp
+                        )
+                    )
+                }
+
+            }
+
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(context = LocalContext.current)
+                        .crossfade(true)
+                        .data(R.drawable.overlay_hitam)
+                        .build(),
+                    filterQuality = FilterQuality.High,
+                    placeholder = painterResource(id = R.drawable.overlay_hitam),
+                ),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+            )
+
+        }
     }
     BackHandler() {
         context.startNewActivity(AnggotaActivity::class.java)
@@ -129,6 +198,8 @@ fun CameraPreview(navController: NavController) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var preview by remember { mutableStateOf<Preview?>(null) }
     val qrCodeVal = remember { mutableStateOf("") }
+    var showWarningDialog by rememberSaveable{ mutableStateOf(false) }
+    var sideEffectBool = false
 
     AndroidView(
         factory = { AndroidViewContext ->
@@ -160,7 +231,11 @@ fun CameraPreview(navController: NavController) {
                     qrcodes.forEach { qrcode ->
                         qrcode.displayValue?.let { qrcodeValue ->
                             qrCodeVal.value = qrcodeValue
-                            navController.navigate(Screen.Anggota.QRScanner.Koleksi.route + "/${qrCodeVal.value}")
+                            if(qrCodeVal.value.contains("http")){
+                                sideEffectBool = true
+                            }else{
+                                navController.navigate(Screen.Anggota.QRScanner.Koleksi.route + "/${qrCodeVal.value}")
+                            }
 //                            Toast.makeText(context, qrcodeValue, Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -186,6 +261,34 @@ fun CameraPreview(navController: NavController) {
             }, ContextCompat.getMainExecutor(context))
         }
     )
+    if(sideEffectBool){
+        LaunchedEffect(key1 = Unit){
+            showWarningDialog=true
+        }
+    }
+    if(showWarningDialog){
+        AlertDialog(
+            onDismissRequest = {showWarningDialog = false
+//                navController.navigate(Screen.Anggota.QRScanner.route)
+            },
+            title = {
+                Text(text = "Perhatian")
+            },
+            text = {
+                Text(text = "Kode-QR Anda Salah, Ulangi dengan benar!")
+            },
+            confirmButton = {
+                Button(onClick = { showWarningDialog = false
+//                    navController.navigate(Screen.Anggota.QRScanner.route)
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Red
+                    )) {
+                    Text(text = "Coba lagi", color = Color.White)
+                }
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)

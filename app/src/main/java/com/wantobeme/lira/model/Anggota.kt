@@ -2,6 +2,7 @@ package com.wantobeme.lira.model
 
 import com.google.gson.annotations.SerializedName
 
+
 data class Anggota(
     @field:SerializedName("memberNo")
     val nomorIdentitas: String,
@@ -25,8 +26,11 @@ data class Anggota(
 // after scan
 data class Loaning(
 
+    @field:SerializedName("status")
+    var status: Int,
+
     @field:SerializedName("catalogid")
-    var katalogDd: String,
+    var katalogId: String,
 
     @field:SerializedName("title")
     var title: String,
@@ -36,6 +40,12 @@ data class Loaning(
 
     @field:SerializedName("publishYear")
     var publishYear: String,
+
+    @field:SerializedName("publisher")
+    var publisher: String,
+
+    @field:SerializedName("publishLocation")
+    var publishLocation: String,
 
     @field:SerializedName("coverURL")
     var coverURL: String,
@@ -48,5 +58,4 @@ data class Loaning(
 
     @field:SerializedName("callnumber")
     var callNumber: String,
-
 )
