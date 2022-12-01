@@ -26,6 +26,9 @@ class SirkulasiLoanItemsViewModel @AssistedInject constructor(
     private val _sirkulasiLoanItemsResponse = MutableStateFlow<Resource<List<SirkulasiLoanItems>>?>(null)
     val sirkulasiLoanItemsResponse: StateFlow<Resource<List<SirkulasiLoanItems>>?> = _sirkulasiLoanItemsResponse
 
+    private val _finishPeminjamanResponse = MutableStateFlow<Resource<StatusMessage>?>(null)
+    val finishPeminjamanResponse: StateFlow<Resource<StatusMessage>?> = _finishPeminjamanResponse
+
 //    private val _deleteResponse = MutableStateFlow<Resource<StatusMessage>?>(null)
 //    val deleteResponse: StateFlow<Resource<StatusMessage>?> = _deleteResponse
 
@@ -57,10 +60,17 @@ class SirkulasiLoanItemsViewModel @AssistedInject constructor(
     }
 
     fun validasiPeminjaman(collectionLoanId: String) = viewModelScope.launch {
-//        sirkulasiRepository
+        sirkulasiRepository.validasiPeminjaman(collectionLoanId)
     }
 
     fun abortPeminjaman(collectionLoanId: String) = viewModelScope.launch {
         sirkulasiRepository.abortPeminjaman(collectionLoanId)
     }
+
+    fun finishPeminjaman(collectionLoanId: String, collectionId: String) = viewModelScope.launch {
+        _finishPeminjamanResponse.value = Resource.Loading
+        val result = sirkulasiRepository.finishPeminjaman(collectionLoanId,collectionId)
+        _finishPeminjamanResponse.value = result
+    }
+
 }

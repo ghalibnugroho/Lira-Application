@@ -1,6 +1,7 @@
 package com.wantobeme.lira.views.petugas
 
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,6 +50,10 @@ fun provideSirkulasiLoanItemsViewModel(collectionId: String?): SirkulasiLoanItem
 fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navController: NavController){
 
     val loanItems = viewModel.sirkulasiLoanItemsResponse.collectAsState()
+    var index by rememberSaveable{ mutableStateOf(0) }
+    var showDialog by rememberSaveable{ mutableStateOf(false) }
+    var successDialog by rememberSaveable{ mutableStateOf(false) }
+    var finishResponse = viewModel.finishPeminjamanResponse.collectAsState()
 
 //    val deleteResponse = viewModel.deleteResponse.collectAsState()
 
@@ -191,10 +196,59 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                         data = it.result[item],
                                         petugas = true,
                                         finish = {
-
+                                            index = item
+                                            showDialog = true
                                         },
                                         extend = {}
                                     )
+                                    if(showDialog){
+                                        AlertDialog(
+                                            onDismissRequest = {
+                                                showDialog = false
+                                            },
+                                            title = { Text(text = "Selesaikan Peminjaman?") },
+                                            text = { Text(text = "Selesaikan peminjaman anggota Koleksi ${it.result[index].collectionId}?") },
+                                            confirmButton = {
+                                                Button(onClick = {
+                                                    showDialog = false
+                                                    viewModel.finishPeminjaman(it.result[index].collectionLoanId, it.result[index].collectionId)
+                                                },
+                                                    colors = ButtonDefaults.buttonColors(
+                                                        backgroundColor = Primary
+                                                    )) {
+                                                    Text(text = "accept", color = Color.White)
+                                                }
+                                                OutlinedButton(onClick = {
+                                                    showDialog = false
+                                                },
+                                                    colors = ButtonDefaults.outlinedButtonColors(
+                                                    )) {
+                                                    Text(text = "no", color = Color.Red)
+                                                }
+                                            }
+                                        )
+                                    }
+                                    if(successDialog){
+                                        AlertDialog(
+                                            onDismissRequest = {
+                                                showDialog = false
+                                                navController.navigate(Screen.Petugas.Sirkulasi.Loan.Item.route + "/${it.result[item].collectionLoanId}")
+                                            },
+                                            title = { Text(text = "Berhasil") },
+                                            text = { Text(text = "Peminjaman telah diselesaikan.") },
+                                            confirmButton = {
+                                                Button(onClick = {
+                                                    showDialog = false
+                                                    navController.navigate(Screen.Petugas.Sirkulasi.Loan.Item.route + "/${it.result[item].collectionLoanId}")
+                                                },
+                                                    colors = ButtonDefaults.buttonColors(
+                                                        backgroundColor = Primary
+                                                    )) {
+                                                    Text(text = "proceed", color = Color.White)
+                                                }
+                                            }
+                                        )
+                                    }
                                 }
                             }
                             if(it.result[0].status.equals("Waiting")){
@@ -210,8 +264,9 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                         onClick = {
                                             // Accept Peminjaman, Update Status to Loaning
                                             it.result.forEach{
-
+                                                viewModel.validasiPeminjaman(it.collectionLoanId)
                                             }
+                                            navController.navigate(Screen.Petugas.Sirkulasi.route)
                                         },
                                         colors = ButtonDefaults.buttonColors(
                                             backgroundColor = Primary
@@ -237,11 +292,32 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                 }
                             }
                         }
+                        finishResponse.value?.let {
+                            when(it){
+                                is Resource.Failure -> {
+
+                                }
+                                Resource.Loading -> {
+                                    showProgressBar()
+                                }
+                                is Resource.Success -> {
+                                    LaunchedEffect(key1 = Unit){
+                                        successDialog=true
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
+    if(finishResponse.value!=null){
+        BackHandler {
+            navController.navigate(Screen.Petugas.Sirkulasi.route)
+        }
+    }
+
 }
 
 //@Preview(showBackground = true)
@@ -347,6 +423,8 @@ fun DetailSirkulasiLoanItems(
                         )
                     }
                     Row() {
+                        // if extend day != null get extend day
+                        // else due date
                         Text(
                             text = "exp: ",
                             style = TextStyle(
@@ -379,6 +457,44 @@ fun DetailSirkulasiLoanItems(
                                 )
                             )
                         }
+                        if(data.terlambat!! > 0){
+                            Row() {
+                                Text(
+                                    text = "Terlambat: ",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+                                Text(
+                                    text = data.terlambat.toString()!! + " Hari",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium
+                                    ),
+                                    color = Color.Red
+                                )
+                            }
+                        }else{
+                            Row() {
+                                Text(
+                                    text = "Keterlambatan: ",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+                                Text(
+                                    text = "Tidak ada",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium
+                                    ),
+                                    color = Primary
+                                )
+                            }
+                        }
+
                     }
                     else if(!data.status.equals("Return")){
                         Row() {
@@ -394,7 +510,8 @@ fun DetailSirkulasiLoanItems(
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium
-                                )
+                                ),
+                                color = Color.Blue
                             )
                         }
                     }
@@ -447,36 +564,69 @@ fun DetailSirkulasiLoanItems(
                     }
                 }
             }else{
+                // tambah login AND pada extend days
                 if(data.status.equals("Loaning")){
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.ExtraBold
-                            )
-                        )
-                        Button(
+                    if(data.isextended!! > 0){
+                        Row(
                             modifier = Modifier
-                                .width(120.dp)
-                                .height(35.dp),
-                            onClick = {
-
-                                // Perpanjang Peminjaman
-                                finish.invoke()
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Primary
-                            )
+                                .fillMaxWidth()
+                                .padding(5.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(text = "Extend", color = Color.White)
+                            Text(
+                                text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            )
+                            Button(
+                                enabled = false,
+                                modifier = Modifier
+                                    .width(120.dp)
+                                    .height(35.dp),
+                                onClick = {
+                                    // Perpanjang Peminjaman
+                                    extend.invoke()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Primary
+                                )
+                            ) {
+                                Text(text = "Extend", color = Color.White)
+                            }
+                        }
+                    }else{
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            )
+                            Button(
+                                modifier = Modifier
+                                    .width(120.dp)
+                                    .height(35.dp),
+                                onClick = {
+                                    // Perpanjang Peminjaman
+                                    extend.invoke()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Primary
+                                )
+                            ) {
+                                Text(text = "Extend", color = Color.White)
+                            }
                         }
                     }
+
                 }
                 else{
                     Row(
@@ -510,7 +660,9 @@ class SampleLoanItemsProvider: PreviewParameterProvider<SirkulasiLoanItems> {
             "122041200002",
             "2022-04-12 00:00:00",
             "2022-04-21 00:00:00",
+            0,
             "2022-04-12 00:00:00",
+            0,
             "Return",
             "5785",
             "9105",
@@ -528,7 +680,9 @@ class SampleLoanItemsProvider: PreviewParameterProvider<SirkulasiLoanItems> {
             "122041200002",
             "2022-04-12 00:00:00",
             "2022-04-21 00:00:00",
+            0,
             "2022-04-12 00:00:00",
+            0,
             "Return",
             "5794",
             "9115",

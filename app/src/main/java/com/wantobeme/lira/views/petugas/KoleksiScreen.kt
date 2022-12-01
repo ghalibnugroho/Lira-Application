@@ -161,7 +161,6 @@ fun KoleksiScreen(viewModel: KoleksiViewModel, navController: NavController){
                                             }
                                         )
                                     }
-
                                 }
                                 if(successDialog){
                                     AlertDialog(

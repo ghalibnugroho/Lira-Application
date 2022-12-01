@@ -1,5 +1,6 @@
 package com.wantobeme.lira.views.anggota
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,6 +61,15 @@ fun HistoryLoanScreen(historyViewModel: HistoryViewModel, navController: NavCont
                             )
                         }
                     }
+                }
+            }
+        }
+    }
+    BackHandler {
+        navController.navigate(Screen.Anggota.Katalog.route){
+            navController.graph.startDestinationRoute?.let { route ->
+                popUpTo(route) {
+                    saveState = true
                 }
             }
         }

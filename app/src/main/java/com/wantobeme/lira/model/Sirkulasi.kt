@@ -77,8 +77,14 @@ data class SirkulasiLoanItems(
     @field:SerializedName("duedate")
     var tanggalBatasPinjam: String,
 
+    @field:SerializedName("isextended")
+    var isextended: Int? = 0,
+
     @field:SerializedName("actualreturn")
     var tanggalDikembalikan: String? = null,
+
+    @field:SerializedName("terlambat")
+    var terlambat: Int? = 0,
 
     @field:SerializedName("loanstatus")
     val status: String,

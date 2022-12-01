@@ -65,9 +65,27 @@ interface ApiServices {
     @GET("petugas/daftarPresensi")
     suspend fun getAllDaftarPresensi(): RPresensi
 
+    @PUT("petugas/validasiPeminjaman/{collectionLoanId}")
+    suspend fun validasiPeminjaman(
+        @Path("collectionLoanId") collectionloanId: String
+    ): StatusMessage
+
     @DELETE("petugas/abortPeminjaman/{collectionLoanId}")
     suspend fun abortPeminjaman(
         @Path("collectionLoanId") collectionloanId: String
+    ): StatusMessage
+
+    @FormUrlEncoded
+    @POST("petugas/extendPeminjaman")
+    suspend fun extendPeminjaman(
+        @Field("collectionLoanId") collectionLoanId: String,
+        @Field("collectionId") collectionId: String
+    ): StatusMessage
+
+    @PUT("petugas/finishPeminjaman/{collectionLoanId}/{collectionId}")
+    suspend fun finishPeminjaman(
+        @Path("collectionLoanId") collectionLoanId: String,
+        @Path("collectionId") collectionId: String
     ): StatusMessage
 
     // Anggota
@@ -92,5 +110,4 @@ interface ApiServices {
         @Field("collectionId") collectionId: String,
         @Field("memberNo") memberNo: String
     ): StatusMessage
-
 }

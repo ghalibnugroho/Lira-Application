@@ -35,22 +35,10 @@ class SirkulasiRepository @Inject constructor(
                     val arr = Pattern.compile("/").split(it.judul)
                     it.judul = arr[0]
                 }
-                if(it.tanggalPinjam.contains(" ")){
-                    val arr = Pattern.compile(" ").split(it.tanggalPinjam)
-                    it.tanggalPinjam = arr[0]
-                }
                 if(it.tanggalDikembalikan==null){
                     it.tanggalDikembalikan = "-"
                 }else{
-                    if(it.tanggalDikembalikan?.contains(" ") == true){
-                        val arr = Pattern.compile(" ").split(it.tanggalDikembalikan)
-                        it.tanggalDikembalikan = arr[0]
-                    }
-                }
-
-                if(it.tanggalBatasPinjam.contains(" ")){
-                    val arr = Pattern.compile(" ").split(it.tanggalBatasPinjam)
-                    it.tanggalBatasPinjam = arr[0]
+                    it.tanggalDikembalikan
                 }
             }
             Resource.Success(result = result)
@@ -68,13 +56,14 @@ class SirkulasiRepository @Inject constructor(
         }
     }
 
-//    suspend fun validasiPeminjaman(collectionId: String): Resource<StatusMessage>{
-//        return try{
-//            Resource.Success
-//        }catch (exception: Exception){
-//            Resource.Failure(exception)
-//        }
-//    }
+    suspend fun validasiPeminjaman(collectionLoanId: String): Resource<StatusMessage>{
+        return try{
+            val result = api.validasiPeminjaman(collectionLoanId)
+            Resource.Success(result = result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
 
     suspend fun abortPeminjaman(collectionloanId: String): Resource<StatusMessage>{
         return try{
@@ -85,5 +74,22 @@ class SirkulasiRepository @Inject constructor(
         }
     }
 
+    suspend fun extendPeminjaman(collectionLoanId: String, collectionId: String): Resource<StatusMessage>{
+        return try{
+            val result = api.extendPeminjaman(collectionLoanId, collectionId)
+            Resource.Success(result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
+
+    suspend fun finishPeminjaman(collectionLoanId: String, collectionId: String): Resource<StatusMessage>{
+        return try {
+            val result = api.finishPeminjaman(collectionLoanId, collectionId)
+            Resource.Success(result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
 
 }

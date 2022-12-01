@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.Guest
 import com.wantobeme.lira.model.SirkulasiLoan
 import com.wantobeme.lira.model.SirkulasiLoanItems
+import com.wantobeme.lira.model.StatusMessage
 import com.wantobeme.lira.repository.AuthRepository
 import com.wantobeme.lira.repository.SirkulasiRepository
 import com.wantobeme.lira.views.anggota.AnggotaActivity
@@ -33,6 +34,9 @@ class HistoryViewModel @Inject constructor(
 
     val _historyLoanItems = MutableStateFlow<Resource<List<SirkulasiLoanItems>>?>(null)
     val historyLoanItems: StateFlow<Resource<List<SirkulasiLoanItems>>?> = _historyLoanItems
+
+    val _extendLoanResponse = MutableStateFlow<Resource<StatusMessage>?>(null)
+    val extendLoanResponse: StateFlow<Resource<StatusMessage>?> = _extendLoanResponse
 
     var myMemberNo by mutableStateOf(Guest())
 
@@ -61,6 +65,13 @@ class HistoryViewModel @Inject constructor(
         delay(700)
         val result = sirkulasiRepository.getCollectionLoanItemsAnggota(collectionLoanId)
         _historyLoanItems.value = result
+    }
+
+    fun extendLoan(collectionLoanId: String, collectionId: String) = viewModelScope.launch {
+        _extendLoanResponse.value = Resource.Loading
+        val result = sirkulasiRepository.extendPeminjaman(collectionLoanId, collectionId)
+        _extendLoanResponse.value = result
+
     }
 
 }

@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import com.wantobeme.lira.MainActivity
 import com.wantobeme.lira.ui.theme.ranchoFamily
 import com.wantobeme.lira.ui.theme.vLightGray
+import com.wantobeme.lira.ui.theme.vPrimary
 import com.wantobeme.lira.viewmodel.guest.AuthViewModel
 import com.wantobeme.lira.views.Screen
 import com.wantobeme.lira.views.utils.Resource
@@ -239,10 +240,10 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
                                 navController.navigate(Screen.Anggota.Presensi.route)
                             },
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = vLightGray
+                                backgroundColor = vPrimary
                             )
                         ) {
-                            Text(text = "Log Presensi", color = Color.Black)
+                            Text(text = "Log Presensi", color = Color.White)
                         }
                         Button(
                             modifier = Modifier
