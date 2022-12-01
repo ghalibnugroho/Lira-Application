@@ -76,9 +76,9 @@ class SirkulasiRepository @Inject constructor(
 //        }
 //    }
 
-    suspend fun abortPeminjaman(collectionloanId: String, collectionId: String): Resource<StatusMessage>{
+    suspend fun abortPeminjaman(collectionloanId: String): Resource<StatusMessage>{
         return try{
-            val result = api.abortPeminjaman(collectionloanId, collectionId)
+            val result = api.abortPeminjaman(collectionloanId)
             Resource.Success(result)
         }catch (exception: Exception){
             Resource.Failure(exception)

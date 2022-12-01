@@ -152,18 +152,8 @@ fun ScannerScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                 ){
-//                    Icon(
-//                        painter = rememberAsyncImagePainter(
-//                            model = ImageRequest.Builder(context = LocalContext.current)
-//                                .crossfade(true)
-//                                .data(R.drawable.ic_baseline_qr_code_2_24)
-//                                .build()
-//                        ),
-//                        contentDescription = "QR Icon",
-//                    )
                     Text(text = "scanning...",
                         style = TextStyle(
-//                            fontFamily = ranchoFamily,
                             fontWeight = FontWeight(400),
                             fontSize = 17.sp
                         )

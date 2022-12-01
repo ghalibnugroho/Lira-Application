@@ -36,11 +36,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".views.petugas.PetugasActivity"/>
+            android:name=".views.petugas.PetugasActivity"
+            android:theme="@style/Theme.LIRA"/>
         <activity
-            android:name=".views.anggota.AnggotaActivity"/>
+            android:name=".views.anggota.AnggotaActivity"
+            android:theme="@style/Theme.LIRA"/>
         <activity
-            android:name=".views.anggota.qrscanner.ScannerActivity"/>
+            android:name=".views.anggota.qrscanner.ScannerActivity"
+            android:theme="@style/Theme.LIRA"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

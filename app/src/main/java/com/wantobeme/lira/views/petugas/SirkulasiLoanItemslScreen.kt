@@ -50,7 +50,7 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
 
     val loanItems = viewModel.sirkulasiLoanItemsResponse.collectAsState()
 
-    val deleteResponse = viewModel.deleteResponse.collectAsState()
+//    val deleteResponse = viewModel.deleteResponse.collectAsState()
 
     loanItems.value?.let {
         when(it){
@@ -227,7 +227,7 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                         onClick = {
                                             // reject peminjaman, Delete collectionLoan dan collectionLoanItems
                                             it.result.forEach{
-                                                viewModel.abortPeminjaman(it.collectionLoanId, it.collectionId)
+                                                viewModel.abortPeminjaman(it.collectionLoanId)
                                             }
                                             navController.navigate(Screen.Petugas.Sirkulasi.route)
                                         },

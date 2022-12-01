@@ -6,6 +6,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.graphics.blue
+import androidx.core.graphics.red
 import androidx.navigation.compose.rememberNavController
 import com.wantobeme.lira.ui.theme.LIRATheme
 import com.wantobeme.lira.views.MainScreen

@@ -30,7 +30,12 @@ fun HistoryLoanScreen(historyViewModel: HistoryViewModel, navController: NavCont
     historyLoan.value?.let {
         when(it){
             is Resource.Failure -> {
-
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(text = "${it.exception.message}")
+                }
             }
             Resource.Loading -> {
                 showProgressBar()
@@ -59,6 +64,5 @@ fun HistoryLoanScreen(historyViewModel: HistoryViewModel, navController: NavCont
             }
         }
     }
-
 }
 

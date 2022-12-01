@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.graphics.red
 import androidx.navigation.compose.rememberNavController
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeCallback
@@ -41,7 +42,6 @@ class ScannerActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-
         setContent {
             LIRATheme {
                 val navController = rememberNavController()

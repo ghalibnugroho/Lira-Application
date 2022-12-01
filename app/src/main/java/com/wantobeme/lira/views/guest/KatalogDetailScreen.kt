@@ -70,7 +70,12 @@ fun KatalogDetailScreen(viewModel: KatalogDetailViewModel, navController: NavCon
     katalogDetail.value?.let {
         when(it){
             is Resource.Failure -> {
-                Text(text = "${it.exception.message}")
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(text = "${it.exception.message}")
+                }
             }
             Resource.Loading -> {
                 showProgressBar()

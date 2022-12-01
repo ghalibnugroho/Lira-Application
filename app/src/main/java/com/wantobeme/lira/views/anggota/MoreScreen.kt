@@ -4,9 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,10 +23,12 @@ import com.wantobeme.lira.views.Screen
 import com.wantobeme.lira.views.utils.Resource
 import com.wantobeme.lira.views.utils.showProgressBar
 import com.wantobeme.lira.views.utils.startNewActivity
+import kotlinx.coroutines.delay
 
 @Composable
 fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
     val context = LocalContext.current
+    var success by rememberSaveable{ mutableStateOf(true) }
 
     LaunchedEffect(key1 = AnggotaActivity::class){
         val member = authViewModel.getMemberNo()
@@ -39,16 +40,26 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ){
-
         dataAnggota.value?.let {
             when(it){
                 is Resource.Failure -> {
-
+                    Text(text = "Literasi Raden",
+                        style = TextStyle(
+                            fontFamily = ranchoFamily,
+                            fontWeight = FontWeight(400),
+                            fontSize = 50.sp
+                        ),
+                        modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
+                    )
+                    success=false
                 }
                 Resource.Loading -> {
                     showProgressBar()
                 }
                 is Resource.Success -> {
+                    LaunchedEffect(key1 = Unit){
+                        success=true
+                    }
                     Column(
                         modifier = Modifier.padding(20.dp),
                         verticalArrangement = Arrangement.Center,
@@ -233,7 +244,6 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
                         ) {
                             Text(text = "Log Presensi", color = Color.Black)
                         }
-                        Spacer(modifier = Modifier.size(20.dp))
                         Button(
                             modifier = Modifier
                                 .width(320.dp)
@@ -249,10 +259,29 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
                         ) {
                             Text(text = "Logout", color = Color.White)
                         }
+                        Spacer(modifier = Modifier.size(20.dp))
                     }
                 }
             }
         }
+        if(!success){
+            Button(
+                modifier = Modifier
+                    .width(320.dp)
+                    .height(50.dp)
+                    .padding(top = 10.dp),
+                onClick = {
+                    authViewModel.logout()
+                    context.startNewActivity(MainActivity::class.java)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Red
+                )
+            ) {
+                Text(text = "Logout", color = Color.White)
+            }
+        }
+
     }
 }
 

@@ -65,14 +65,18 @@ interface ApiServices {
     @GET("petugas/daftarPresensi")
     suspend fun getAllDaftarPresensi(): RPresensi
 
-    @DELETE("petugas/abortPeminjaman/{collectionLoanId}/{collectionId}")
+    @DELETE("petugas/abortPeminjaman/{collectionLoanId}")
     suspend fun abortPeminjaman(
-        @Path("collectionLoanId") collectionloanId: String,
-        @Path("collectionId") collectionId: String
+        @Path("collectionLoanId") collectionloanId: String
     ): StatusMessage
 
-
     // Anggota
+    @FormUrlEncoded
+    @POST("anggota/presensi")
+    suspend fun presensiAnggota(
+        @Field("memberNo") memberNo: String
+    ): StatusMessage
+
     @GET("anggota/logPresensi/{memberNo}")
     suspend fun getPresensiByNomorAnggota(@Path("memberNo") memberNo: String): RPresensi
 

@@ -78,7 +78,7 @@ fun LoginScreen(authViewModel: AuthViewModel, navController: NavController){
             )
             if(emailState.hasError){
                 Text(
-                    text = "Email harus diisi",
+                    text = "Masukkan format Email",
                     color = Color.Red,
                     style = MaterialTheme.typography.caption
                 )

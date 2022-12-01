@@ -54,22 +54,79 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
     var showWarningDialog by rememberSaveable{ mutableStateOf(false) }
 
     var memberNo = qrScanViewModel.myMemberNo
-
     var afterScan = qrScanViewModel.afterScan.collectAsState()
+    var presensiResponse = qrScanViewModel.presensiResponse.collectAsState()
 
     var successDialog by rememberSaveable{ mutableStateOf(false) }
     var abortDialog by rememberSaveable{ mutableStateOf(false) }
+    var loanExistDialog by rememberSaveable{ mutableStateOf(false) }
+    var presensiDialog by rememberSaveable{ mutableStateOf(false) }
 
 
     // kondisi qr untuk presensi
     if(currentArgs.equals("PerpustakaanUNIRA")){
-        Text("Input data presensi")
+        Log.i("TAG", "${memberNo.identitas}")
+
+        LaunchedEffect(key1 = Unit){
+            qrScanViewModel.presensiAnggota(memberNo.identitas)
+        }
+
+        presensiResponse.value?.let {
+            when(it){
+                is Resource.Failure -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ){
+                        Text(text = "Terjadi kesalahan pada sistem terkait Detail peminjaman buku.")
+                    }
+                }
+                Resource.Loading -> {
+                    showProgressBar()
+                }
+                is Resource.Success -> {
+                    LaunchedEffect(key1 = Unit){
+                        presensiDialog=true
+                    }
+                    if(presensiDialog){
+                        AlertDialog(
+                            onDismissRequest = {showWarningDialog = false
+                                context.startNewActivity(AnggotaActivity::class.java)
+                            },
+                            title = {
+                                Text(text = "Presensi")
+                            },
+                            text = {
+                                Text(text = "Anda telah melakukan presensi, Silahkan nikmati layanan yang telah kami sediakan, Terima Kasih.")
+                                Spacer(modifier = Modifier.size(20.dp))
+                            },
+                            confirmButton = {
+                                Button(onClick = { showWarningDialog = false
+                                    context.startNewActivity(AnggotaActivity::class.java)
+                                },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Primary
+                                    ),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(text = "Kembali", color = Color.White)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        BackHandler {
+            context.startNewActivity(AnggotaActivity::class.java)
+        }
     }
     else{
         // launch viewmodel untuk mengecek ketersediaan kode-QR pada koleksi
         LaunchedEffect(key1 = ScannerActivity::class){
             qrScanViewModel.qrCheck(currentArgs)
-            qrScanViewModel.getMemberNo()
+//            qrScanViewModel.getMemberNo()
         }
         val qrScan = qrScanViewModel.qrScan.collectAsState()
         // menjabarkan hasil response check kode-QR dari server
@@ -117,6 +174,10 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
                     }else if(it.result.status ==0){
                         LaunchedEffect(key1 = Unit ){
                             abortDialog=true
+                        }
+                    }else if(it.result.status == -1){
+                        LaunchedEffect(key1 = Unit){
+                            loanExistDialog=true
                         }
                     }
                 }
@@ -166,6 +227,30 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
                             backgroundColor = Color.Red
                         )) {
                         Text(text = "Scan Kembali", color = Color.White)
+                    }
+                }
+            )
+        }
+
+        if(loanExistDialog){
+            AlertDialog(
+                onDismissRequest = {loanExistDialog = false
+                    context.startNewActivity(AnggotaActivity::class.java)
+                },
+                title = {
+                    Text(text = "Gagal")
+                },
+                text = {
+                    Text(text = "Anda telah melakukan peminjaman, selesaikan terlebih dahulu peminjaman anda")
+                },
+                confirmButton = {
+                    Button(onClick = { loanExistDialog = false
+                        context.startNewActivity(AnggotaActivity::class.java)
+                    },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Red
+                        )) {
+                        Text(text = "Kembali", color = Color.White)
                     }
                 }
             )
