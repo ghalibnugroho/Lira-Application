@@ -60,6 +60,7 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
     var successDialog by rememberSaveable{ mutableStateOf(false) }
     var abortDialog by rememberSaveable{ mutableStateOf(false) }
     var loanExistDialog by rememberSaveable{ mutableStateOf(false) }
+    var loanExistCurrentDayDialog by rememberSaveable{ mutableStateOf(false) }
     var presensiDialog by rememberSaveable{ mutableStateOf(false) }
 
 
@@ -180,6 +181,11 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
                             loanExistDialog=true
                         }
                     }
+                    else if(it.result.status == -2){
+                        LaunchedEffect(key1 = Unit){
+                            loanExistCurrentDayDialog=true
+                        }
+                    }
                 }
             }
         }
@@ -208,7 +214,7 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
             )
         }
 
-        if(abortDialog){
+        if( abortDialog){
             AlertDialog(
                 onDismissRequest = {showWarningDialog = false
                     navController.navigate(Screen.Anggota.QRScanner.route)
@@ -242,6 +248,30 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
                 },
                 text = {
                     Text(text = "Anda telah melakukan peminjaman, selesaikan terlebih dahulu peminjaman anda")
+                },
+                confirmButton = {
+                    Button(onClick = { loanExistDialog = false
+                        context.startNewActivity(AnggotaActivity::class.java)
+                    },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Red
+                        )) {
+                        Text(text = "Kembali", color = Color.White)
+                    }
+                }
+            )
+        }
+
+        if(loanExistCurrentDayDialog){
+            AlertDialog(
+                onDismissRequest = {loanExistDialog = false
+                    context.startNewActivity(AnggotaActivity::class.java)
+                },
+                title = {
+                    Text(text = "Gagal")
+                },
+                text = {
+                    Text(text = "Anda telah melakukan peminjaman hari ini, Kembali lagi besok")
                 },
                 confirmButton = {
                     Button(onClick = { loanExistDialog = false

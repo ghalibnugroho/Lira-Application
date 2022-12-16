@@ -88,6 +88,19 @@ interface ApiServices {
         @Path("collectionId") collectionId: String
     ): StatusMessage
 
+    @GET("petugas/allPelanggaran")
+    suspend fun getAllPelanggaran(): RPelanggaran
+
+    @FormUrlEncoded
+    @POST("petugas/addPelanggaran")
+    suspend fun addPelanggaran(
+        @Field("memberNo") memberNo: String?,
+        @Field("collectionLoanId") collectionLoanId: String?,
+        @Field("collectionId") collectionId: String?,
+        @Field("jenisPelanggaran") jenisPelanggaran: String,
+        @Field("jumlahDenda") jumlahDenda: String
+    ): StatusMessage
+
     // Anggota
     @FormUrlEncoded
     @POST("anggota/presensi")
@@ -110,4 +123,7 @@ interface ApiServices {
         @Field("collectionId") collectionId: String,
         @Field("memberNo") memberNo: String
     ): StatusMessage
+
+    @GET("anggota/pelanggaran/{memberNo}")
+    suspend fun getPelanggaranByMemberNo(@Path("memberNo") memberNo: String): RPelanggaran
 }

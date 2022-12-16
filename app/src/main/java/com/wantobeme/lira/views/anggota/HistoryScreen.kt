@@ -47,7 +47,7 @@ fun HistoryLoanScreen(historyViewModel: HistoryViewModel, navController: NavCont
                         contentAlignment = Alignment.Center,
                         modifier = Modifier.fillMaxSize()
                     ){
-                        Text(text = "melakukan peminjaman buku.")
+                        Text(text = "Anda Belum melakukan peminjaman buku.")
                     }
                 }else{
                     LazyColumn(){

@@ -35,8 +35,8 @@ fun HomeScreen(viewModel: KatalogViewModel, navController: NavController){
                 showProgressBar()
             }
             is Resource.Success -> {
-                if (it.result.isEmpty()){
-                    Text(text = "Daftar Katalog Buku tidak tersedia.")
+                if (it.result==null){
+                    Text(text = "Daftar Katalog Buku Kosong.")
                 }else{
                     LazyVerticalGrid(
                         cells = GridCells.Fixed(2),

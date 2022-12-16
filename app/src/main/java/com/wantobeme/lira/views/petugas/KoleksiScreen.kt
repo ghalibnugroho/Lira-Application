@@ -55,6 +55,9 @@ fun KoleksiScreen(viewModel: KoleksiViewModel, navController: NavController){
 
     val context = LocalContext.current
 
+    val currentArgs = navController.currentBackStackEntry?.arguments?.getString("Id")
+    Log.i("currentArgs AfterScan","${currentArgs}")
+
     var showDialog by rememberSaveable{ mutableStateOf(false) }
     var successDialog by rememberSaveable{ mutableStateOf(false) }
     var index by rememberSaveable{ mutableStateOf(0) }
@@ -203,7 +206,8 @@ fun KoleksiScreen(viewModel: KoleksiViewModel, navController: NavController){
                     }
                 }
                 BackHandler {
-                    navController.navigate(Screen.Petugas.Search.DetailKatalog.route + "/${it.result[0].katalogId}")
+//                    navController.navigate(Screen.Petugas.Search.DetailKatalog.route + "/${it.result[0].katalogId}")
+                    navController.navigate(Screen.Petugas.Search.DetailKatalog.route + "/${currentArgs}")
                 }
             }
         }

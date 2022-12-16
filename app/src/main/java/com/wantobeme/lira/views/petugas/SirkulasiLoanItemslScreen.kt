@@ -2,7 +2,9 @@ package com.wantobeme.lira.views.petugas
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -159,6 +161,27 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                         .fillMaxWidth()
                                         .padding(bottom = 5.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween
+                                ){
+                                    Text(
+                                        text = "Alamat",
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            fontWeight = FontWeight.Light
+                                        )
+                                    )
+                                    Text(
+                                        text = it.result[0].alamat,
+                                        style = TextStyle(
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    )
+                                }
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 5.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
                                         text = "Nomor Hp",
@@ -199,7 +222,12 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
                                             index = item
                                             showDialog = true
                                         },
-                                        extend = {}
+                                        extend = {},
+                                        onClickCard = {},
+                                        onLongClickCard = {
+                                            navController.navigate(Screen.Petugas.Pelanggaran.Tambah.route + "/${it.result[item].nomorIdentitas}/${it.result[item].collectionLoanId}/${it.result[item].collectionId}")
+                                        },
+                                        navController
                                     )
                                     if(showDialog){
                                         AlertDialog(
@@ -321,18 +349,28 @@ fun SirkulasiLoanItemsScreen(viewModel: SirkulasiLoanItemsViewModel, navControll
 }
 
 //@Preview(showBackground = true)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailSirkulasiLoanItems(
     data: SirkulasiLoanItems,
     petugas: Boolean,
     finish: () -> Unit,
-    extend: () -> Unit
+    extend: () -> Unit,
+    onClickCard: () -> Unit,
+    onLongClickCard: () -> Unit,
+    navController: NavController
 //    @PreviewParameter(SampleLoanItemsProvider::class) data: SirkulasiLoanItems
 ){
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(15.dp)
+            .combinedClickable(
+                onClick = { },
+                onLongClick = {
+                    onLongClickCard.invoke()
+                }
+            )
     ) {
         Column() {
             Text(
@@ -517,6 +555,7 @@ fun DetailSirkulasiLoanItems(
                     }
                 }
             }
+            // jika petugas
             if(petugas){
                 if(data.status.equals("Loaning")){
                     Row(
@@ -548,23 +587,62 @@ fun DetailSirkulasiLoanItems(
                         }
                     }
                 }else{
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp),
-                        horizontalArrangement = Arrangement.End
-                    ){
-                        Text(
-                            text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.ExtraBold
+                    // jika koleksi dikembalikan terlambat
+                    if(data.terlambat!! > 0){
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ){
+                            Button(
+                                onClick = {
+                                    navController.navigate(Screen.Petugas.Pelanggaran.Tambah.route + "/${data.nomorIdentitas}/${data.collectionLoanId}/${data.collectionId}")
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.Red
+                                )
+                            ) {
+                                Text(
+                                    text = "+ denda",
+                                    style = TextStyle(
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Normal
+                                    ),
+                                    color = Color.White
+                                )
+                            }
+                            Text(
+                                text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
                             )
-                        )
+                        }
                     }
+                    else{
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp),
+                            horizontalArrangement = Arrangement.End
+                        ){
+                            Text(
+                                text = "B-${data.nomorBarcode}", //collectionLoad_id / collectionid
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            )
+                        }
+                    }
+
                 }
-            }else{
-                // tambah login AND pada extend days
+            }
+            // jika anggota
+            else{
+                // tambah tombol extend days
                 if(data.status.equals("Loaning")){
                     if(data.isextended!! > 0){
                         Row(
@@ -655,6 +733,7 @@ class SampleLoanItemsProvider: PreviewParameterProvider<SirkulasiLoanItems> {
         SirkulasiLoanItems(
             "NING JAUHAROTUL WAHIDIYAH",
             "201964010066",
+            "Malang",
             "jauhawahidah@gmail.com",
             "",
             "122041200002",
@@ -675,6 +754,7 @@ class SampleLoanItemsProvider: PreviewParameterProvider<SirkulasiLoanItems> {
         SirkulasiLoanItems(
             "NING JAUHAROTUL WAHIDIYAH",
             "201964010066",
+            "malang",
             "jauhawahidah@gmail.com",
             "",
             "122041200002",

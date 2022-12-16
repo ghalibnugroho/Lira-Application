@@ -77,7 +77,10 @@ fun HistoryDetailScreen(historyViewModel: HistoryViewModel, navController: NavCo
                                         extend = {
                                             index = item
                                             showDialog = true
-                                        }
+                                        },
+                                        onClickCard = {},
+                                        onLongClickCard = {},
+                                        navController
                                     )
                                     if(showDialog){
                                         AlertDialog(

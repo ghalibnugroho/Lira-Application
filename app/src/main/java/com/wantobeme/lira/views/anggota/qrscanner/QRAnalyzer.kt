@@ -25,9 +25,9 @@ class QRAnalyzer(
                     .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
                     .build()
                 //_ALL_FORMATS
-                val barcodeScanner = BarcodeScanning.getClient(options)
+                val qrScanner = BarcodeScanning.getClient(options)
                 val imageToProcess = InputImage.fromMediaImage(imageToAnalyze, image.imageInfo.rotationDegrees)
-                barcodeScanner.process(imageToProcess)
+                qrScanner.process(imageToProcess)
                     .addOnSuccessListener { qrcodes ->
                         if (qrcodes.isNotEmpty()) {
                             onQrcodeDetected(qrcodes)

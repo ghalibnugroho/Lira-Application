@@ -13,6 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.wantobeme.lira.MainActivity
 import com.wantobeme.lira.ui.theme.Primary
 import com.wantobeme.lira.ui.theme.ranchoFamily
@@ -20,11 +21,12 @@ import com.wantobeme.lira.ui.theme.vLightGray
 import com.wantobeme.lira.ui.theme.vPrimary
 import com.wantobeme.lira.viewmodel.guest.AuthViewModel
 import com.wantobeme.lira.viewmodel.petugas.ManageViewModel
+import com.wantobeme.lira.views.Screen
 import com.wantobeme.lira.views.uiState.LoginState
 import com.wantobeme.lira.views.utils.startNewActivity
 
 @Composable
-fun ManageScreen(viewModel: ManageViewModel, authViewModel: AuthViewModel){
+fun ManageScreen(viewModel: ManageViewModel, authViewModel: AuthViewModel, navController: NavController){
     val context = LocalContext.current
     Box(
         contentAlignment = Alignment.Center,
@@ -55,7 +57,7 @@ fun ManageScreen(viewModel: ManageViewModel, authViewModel: AuthViewModel){
                     .height(50.dp)
                     .padding(top = 10.dp),
                 onClick = {
-
+                    navController.navigate(Screen.Petugas.Pelanggaran.route)
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = vPrimary

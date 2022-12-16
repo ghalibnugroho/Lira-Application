@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
             LIRATheme {
-                MainScreen(hiltViewModel())
+                MainScreen()
             }
         }
     }

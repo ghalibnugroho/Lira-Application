@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wantobeme.lira.model.Guest
 import com.wantobeme.lira.model.Presensi
+import com.wantobeme.lira.model.RPresensi
 import com.wantobeme.lira.repository.AuthRepository
 import com.wantobeme.lira.repository.PresensiRepository
 import com.wantobeme.lira.views.utils.Resource
@@ -25,8 +26,8 @@ class DaftarPresensiViewModel @Inject constructor(
 
     var myMemberNo by mutableStateOf(Guest())
 
-    private val _allPresensi = MutableStateFlow<Resource<List<Presensi>>?>(null)
-    val allPresensi: StateFlow<Resource<List<Presensi>>?> = _allPresensi
+    private val _allPresensi = MutableStateFlow<Resource<RPresensi>?>(null)
+    val allPresensi: StateFlow<Resource<RPresensi>?> = _allPresensi
 
     private val _presensiAnggota = MutableStateFlow<Resource<List<Presensi>>?>(null)
     val presensiAnggota: StateFlow<Resource<List<Presensi>>?> = _presensiAnggota

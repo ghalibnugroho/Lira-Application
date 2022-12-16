@@ -1,6 +1,7 @@
 package com.wantobeme.lira.repository
 
 import com.wantobeme.lira.model.Presensi
+import com.wantobeme.lira.model.RPresensi
 import com.wantobeme.lira.model.StatusMessage
 import com.wantobeme.lira.network.ApiServices
 import com.wantobeme.lira.views.utils.Resource
@@ -10,9 +11,9 @@ class PresensiRepository @Inject constructor(
     private val api: ApiServices
 ) {
 
-    suspend fun getAllDaftarPresensi(): Resource<List<Presensi>>{
+    suspend fun getAllDaftarPresensi(): Resource<RPresensi>{
         return try {
-            val result = api.getAllDaftarPresensi().data
+            val result = api.getAllDaftarPresensi()
             Resource.Success(result = result)
         }catch (exception: Exception){
             Resource.Failure(exception = exception)

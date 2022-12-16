@@ -71,10 +71,10 @@ class KatalogViewModel @Inject constructor(
                         delay(1000)
                         searchList = KatalogState(data = it)
                     }
-                }
+                } 
             }
         }catch (exception: Exception){
-            searchList = KatalogState(error = "Terjadi kesalahan pada catch block:")
+            searchList = KatalogState(error = "Buku tidak ada")
         }
     }
 }

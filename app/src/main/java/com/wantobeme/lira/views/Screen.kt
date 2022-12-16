@@ -25,7 +25,7 @@ sealed class Screen (var route: String, var icon: Int, var title: String ){
         } //qrScanner
         object More: Screen("more", R.drawable.ic_baseline_more_horiz_24,"More")
         object Presensi: Screen("presensi", R.drawable.ic_baseline_fact_check_24,"Presensi") //listHistoryPeminjaman
-        object Profile: Screen("profile", R.drawable.ic_baseline_notifications_24,"Profile")
+        object Pelanggaran: Screen("pelanggaran", R.drawable.ic_baseline_notifications_24,"Pelanggaran")
         object NotifAnggota: Screen("notifikasiAnggota", R.drawable.ic_baseline_notifications_24,"Notifikasi")
 
     }
@@ -34,6 +34,9 @@ sealed class Screen (var route: String, var icon: Int, var title: String ){
             object Loan: Screen("sirkulasiLoan", R.drawable.ic_baseline_home_24, "Sirkulasi Loan"){
                 object Item: Screen("sirkulasiItem", R.drawable.ic_baseline_home_24, "Sirkulasi Item")
             }
+        }
+        object Pelanggaran: Screen("daftarPelanggaran", R.drawable.ic_baseline_account_circle_24, "Daftar Pelanggaran"){
+            object Tambah: Screen("tambahPelanggaran", R.drawable.ic_baseline_account_circle_24, "Tambah Pelanggaran")
         }
         object Search: Screen("searchKatalogPetugas", R.drawable.ic_baseline_search_24, "Search"){
             object DetailKatalog: Screen("detailKatalog", R.drawable.ic_baseline_home_24, "Detail Katalog"){

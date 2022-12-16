@@ -27,7 +27,7 @@ import com.wantobeme.lira.viewmodel.guest.KatalogViewModel
 import com.wantobeme.lira.views.navigation.MainNavHost
 
 @Composable
-fun MainScreen(katalogViewModel: KatalogViewModel){
+fun MainScreen(){
 
     var showTopBar by rememberSaveable { mutableStateOf(true) }
     var showBottomBar by rememberSaveable { mutableStateOf(true) }

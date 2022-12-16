@@ -62,6 +62,9 @@ data class SirkulasiLoanItems(
     @field:SerializedName("memberno")
     val nomorIdentitas: String,
 
+    @field:SerializedName("address")
+    val alamat: String,
+
     @field:SerializedName("email")
     val email: String,
 

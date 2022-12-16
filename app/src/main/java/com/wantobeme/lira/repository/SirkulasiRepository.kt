@@ -2,6 +2,7 @@ package com.wantobeme.lira.repository
 
 import com.wantobeme.lira.model.*
 import com.wantobeme.lira.network.ApiServices
+import com.wantobeme.lira.views.uiState.PelanggaranState
 import com.wantobeme.lira.views.utils.Resource
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -86,6 +87,33 @@ class SirkulasiRepository @Inject constructor(
     suspend fun finishPeminjaman(collectionLoanId: String, collectionId: String): Resource<StatusMessage>{
         return try {
             val result = api.finishPeminjaman(collectionLoanId, collectionId)
+            Resource.Success(result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
+
+    suspend fun getAllPelanggaran(): Resource<RPelanggaran>{
+        return try{
+            val result = api.getAllPelanggaran()
+            Resource.Success(result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
+
+    suspend fun getPelanggaranAnggota(memberNo: String): Resource<RPelanggaran>{
+        return try{
+            val result = api.getPelanggaranByMemberNo(memberNo)
+            Resource.Success(result)
+        }catch (exception: Exception){
+            Resource.Failure(exception)
+        }
+    }
+
+    suspend fun addPelanggaran(memberNo: String?, loanId: String?, collectionId: String?, pelanggaranState: PelanggaranState): Resource<StatusMessage>{
+        return try{
+            val result = api.addPelanggaran(memberNo, loanId, collectionId, pelanggaranState.jenisPelanggaran, pelanggaranState.jumlahDenda)
             Resource.Success(result)
         }catch (exception: Exception){
             Resource.Failure(exception)

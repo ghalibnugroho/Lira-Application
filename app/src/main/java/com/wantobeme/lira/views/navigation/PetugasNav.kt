@@ -88,7 +88,25 @@ fun PetugasNav(navController: NavHostController){
             )
         }
         composable(Screen.Petugas.Manage.route){
-            ManageScreen(hiltViewModel(), hiltViewModel())
+            ManageScreen(hiltViewModel(), hiltViewModel(), navController)
+        }
+        composable(Screen.Petugas.Pelanggaran.route){
+            DaftarPelanggaranScreen(hiltViewModel(), navController)
+        }
+        composable(Screen.Petugas.Pelanggaran.Tambah.route + "/{memberNo}/{loanId}/{collectionId}",
+            arguments = listOf(
+                navArgument(name = "memberNo") {
+                    type = NavType.StringType
+                },
+                navArgument(name = "loanId") {
+                    type = NavType.StringType
+                },
+                navArgument(name = "collectionId") {
+                    type = NavType.StringType
+                }
+            )
+        ){ entry ->
+            TambahPelanggaranScreen(hiltViewModel(), navController)
         }
     }
 }

@@ -45,6 +45,9 @@ fun AnggotaNav(navController: NavHostController){
         composable(Screen.Anggota.Presensi.route){
             PresensiScreen(hiltViewModel())
         }
+        composable(Screen.Anggota.Pelanggaran.route){
+            PelanggaranScreen(hiltViewModel())
+        }
         composable(Screen.Anggota.NotifAnggota.route){
             NotifikasiAnggotaScreen()
         }

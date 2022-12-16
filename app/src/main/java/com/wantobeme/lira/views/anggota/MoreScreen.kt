@@ -3,6 +3,7 @@ package com.wantobeme.lira.views.anggota
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,22 +41,98 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
-    ){
+    ){  Column{
         dataAnggota.value?.let {
             when(it){
                 is Resource.Failure -> {
-                    Text(text = "Literasi Raden",
-                        style = TextStyle(
-                            fontFamily = ranchoFamily,
-                            fontWeight = FontWeight(400),
-                            fontSize = 50.sp
-                        ),
-                        modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
-                    )
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Text(text = "Literasi Raden",
+                                style = TextStyle(
+                                    fontFamily = ranchoFamily,
+                                    fontWeight = FontWeight(400),
+                                    fontSize = 50.sp
+                                ),
+                                modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
+                            )
+                        }
+                        Button(
+                            modifier = Modifier
+                                .width(320.dp)
+                                .height(50.dp)
+                                .padding(top = 10.dp),
+                            onClick = {
+                                authViewModel.logout()
+                                context.startNewActivity(MainActivity::class.java)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Red
+                            )
+                        ) {
+                            Text(text = "Logout", color = Color.White)
+                        }
+                    }
                     success=false
                 }
                 Resource.Loading -> {
-                    showProgressBar()
+//                    showProgressBar()
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Text(text = "Literasi Raden",
+                                style = TextStyle(
+                                    fontFamily = ranchoFamily,
+                                    fontWeight = FontWeight(400),
+                                    fontSize = 50.sp
+                                ),
+                                modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp)
+                            )
+                        }
+                        CircularProgressIndicator()
+                        Button(
+                            modifier = Modifier
+                                .width(320.dp)
+                                .height(50.dp)
+                                .padding(top = 10.dp),
+                            onClick = {
+                                navController.navigate(Screen.Anggota.Presensi.route)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = vPrimary
+                            )
+                        ) {
+                            Text(text = "Log Presensi", color = Color.White)
+                        }
+                        Button(
+                            modifier = Modifier
+                                .width(320.dp)
+                                .height(50.dp)
+                                .padding(top = 10.dp),
+                            onClick = {
+                                authViewModel.logout()
+                                context.startNewActivity(MainActivity::class.java)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Red
+                            )
+                        ) {
+                            Text(text = "Logout", color = Color.White)
+                        }
+                    }
+
                 }
                 is Resource.Success -> {
                     LaunchedEffect(key1 = Unit){
@@ -251,6 +328,20 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
                                 .height(50.dp)
                                 .padding(top = 10.dp),
                             onClick = {
+                                navController.navigate(Screen.Anggota.Pelanggaran.route)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = vPrimary
+                            )
+                        ) {
+                            Text(text = "Pelanggaran", color = Color.White)
+                        }
+                        Button(
+                            modifier = Modifier
+                                .width(320.dp)
+                                .height(50.dp)
+                                .padding(top = 10.dp),
+                            onClick = {
                                 authViewModel.logout()
                                 context.startNewActivity(MainActivity::class.java)
                             },
@@ -265,23 +356,7 @@ fun MoreScreen(authViewModel: AuthViewModel, navController: NavController){
                 }
             }
         }
-        if(!success){
-            Button(
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(50.dp)
-                    .padding(top = 10.dp),
-                onClick = {
-                    authViewModel.logout()
-                    context.startNewActivity(MainActivity::class.java)
-                },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Red
-                )
-            ) {
-                Text(text = "Logout", color = Color.White)
-            }
-        }
+    }
 
     }
 }

@@ -25,7 +25,7 @@ class QRScanViewModel @Inject constructor(
     private val sirkulasiRepository: SirkulasiRepository,
     private val presensiRepository: PresensiRepository
 ): ViewModel(){
-    // load data after scanning
+    // load data when scanning
     private val _qrScan = MutableStateFlow<Resource<Loaning>?>(null)
     val qrScan: StateFlow<Resource<Loaning>?> = _qrScan
 

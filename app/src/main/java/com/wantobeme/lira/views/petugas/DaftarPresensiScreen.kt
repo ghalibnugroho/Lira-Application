@@ -89,8 +89,8 @@ fun DaftarPresensiScreen(presensiViewModel: DaftarPresensiViewModel, navControll
                             )
                         }
                         LazyColumn(){
-                            items(it.result.size){items ->
-                                CardPresensi(data = it.result[items])
+                            items(it.result.data.size){items ->
+                                CardPresensi(data = it.result.data[items])
                             }
                         }
                     }

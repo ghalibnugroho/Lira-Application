@@ -2,9 +2,7 @@ package com.wantobeme.lira.views.anggota
 
 import android.Manifest
 import android.util.Log
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -13,16 +11,13 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
@@ -32,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
@@ -41,7 +35,6 @@ import coil.request.ImageRequest
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.permissions.rememberPermissionState
 import com.google.common.util.concurrent.ListenableFuture
 import com.wantobeme.lira.R
 import com.wantobeme.lira.ui.theme.ranchoFamily
@@ -217,7 +210,7 @@ fun CameraPreview(navController: NavController) {
                     it.setSurfaceProvider(previewView.surfaceProvider)
                 }
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-                val barcodeAnalyser = QRAnalyzer { qrcodes ->
+                val qrAnalyser = QRAnalyzer { qrcodes ->
                     qrcodes.forEach { qrcode ->
                         qrcode.displayValue?.let { qrcodeValue ->
                             qrCodeVal.value = qrcodeValue
@@ -234,7 +227,7 @@ fun CameraPreview(navController: NavController) {
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
                     .also {
-                        it.setAnalyzer(cameraExecutor, barcodeAnalyser)
+                        it.setAnalyzer(cameraExecutor, qrAnalyser)
                     }
 
                 try {
