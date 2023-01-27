@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 
 object Constant {
-    const val BASE_URL ="http://192.168.220.212:9090/"
+    const val BASE_URL ="http://192.168.34.212:9090/"
 }
 
 @InstallIn(SingletonComponent::class)
@@ -39,7 +39,7 @@ object RetrofitApi {
             .build()
             .create(ApiServices::class.java)
     }
-    private fun getOkHttpClient() =
+    fun getOkHttpClient() =
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY

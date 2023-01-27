@@ -168,19 +168,25 @@ fun AfterScanScreen(qrScanViewModel: QRScanViewModel, navController: NavControll
                     showProgressBar()
                 }
                 is Resource.Success -> {
+                    // meminjam
                     if(it.result.status ==1){
                         LaunchedEffect(key1 = Unit ){
                             successDialog=true
                         }
-                    }else if(it.result.status ==0){
+                    }
+                    // buku masih dipinjam
+                    else if(it.result.status ==0){
                         LaunchedEffect(key1 = Unit ){
                             abortDialog=true
                         }
-                    }else if(it.result.status == -1){
+                    }
+                    // anggota masih dalam status memiliki peminjaman
+                    else if(it.result.status == -1){
                         LaunchedEffect(key1 = Unit){
                             loanExistDialog=true
                         }
                     }
+                    // telah melakukan peminjaman di hari yang sama
                     else if(it.result.status == -2){
                         LaunchedEffect(key1 = Unit){
                             loanExistCurrentDayDialog=true

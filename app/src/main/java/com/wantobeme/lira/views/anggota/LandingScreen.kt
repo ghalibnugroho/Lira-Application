@@ -38,11 +38,11 @@ fun LandingScreen(){
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     showTopBar = when (navBackStackEntry?.destination?.route) {
-        Screen.Anggota.NotifAnggota.route -> false
+//        Screen.Anggota.NotifAnggota.route -> false
         else -> true // in all other cases show bottom bar
     }
     showBottomBar = when (navBackStackEntry?.destination?.route) {
-        Screen.Anggota.NotifAnggota.route -> false
+//        Screen.Anggota.NotifAnggota.route -> false
         else -> true // in all other cases show bottom bar
     }
 

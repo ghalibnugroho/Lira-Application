@@ -64,7 +64,7 @@ class KatalogViewModel @Inject constructor(
 //            val result = katalogRepository.searchKatalogsList(param)
             when(data){
                 is Resource.Failure -> {
-                    searchList = KatalogState(error = "Terjadi kesalahan")
+                    searchList = KatalogState(error = "Terjadi kesalahan jaringan")
                 }
                 is Resource.Success -> {
                     data.result.let {

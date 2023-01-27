@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "296413908680",
+    "project_id": "lira-6bad3",
+    "storage_bucket": "lira-6bad3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296413908680:android:a4a14ad3fa8550e5d71ffd",
+        "android_client_info": {
+          "package_name": "com.service.composefcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296413908680-ka6gkd3lk7habucj2nddt55mdggflfbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPCnTur8hW2jS8ALlavC1jIkajJKvx7JI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296413908680-ka6gkd3lk7habucj2nddt55mdggflfbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296413908680:android:235d62729eaa219fd71ffd",
+        "android_client_info": {
+          "package_name": "com.wantobeme.lira"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296413908680-ka6gkd3lk7habucj2nddt55mdggflfbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPCnTur8hW2jS8ALlavC1jIkajJKvx7JI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296413908680-ka6gkd3lk7habucj2nddt55mdggflfbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

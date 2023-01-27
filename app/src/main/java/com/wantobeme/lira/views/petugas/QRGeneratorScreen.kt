@@ -50,9 +50,7 @@ fun QRGeneratorScreen(qrViewModel: QRViewModel, navController: NavController){
     if(current_Args!=null){
         kodeQRFlow.value?.let {
             when(it){
-                is Resource.Failure -> {
-
-                }
+                is Resource.Failure -> {}
                 Resource.Loading -> {
                     showProgressBar()
                 }
