@@ -5,8 +5,5 @@ LIRA (Literasi Raden) adalah aplikasi pendukung pelayanan sirkulasi perpustakaan
 
 
 Screenshot Application:
-![Daftar Katalog](https://user-images.githubusercontent.com/36807013/215046118-d0fcc365-0b03-4864-833d-b070abb817be.jpg)
-![Pencarian Katalog](https://user-images.githubusercontent.com/36807013/215046444-027d8b85-ba18-40db-9a91-28cf26d90eff.jpg)
-![Scanner](https://user-images.githubusercontent.com/36807013/215046844-9c721f4f-676e-41e8-81b6-2bb842e11072.png)
-![Verifikasi Peminjaman (2)](https://user-images.githubusercontent.com/36807013/215046905-9a4d2098-56da-4619-9c2e-d5286f6a1e7a.jpg)
+![Daftar Katalog_result](https://user-images.githubusercontent.com/36807013/215048433-42c6d97d-473b-406a-955c-3fb76ba2f3e1.png) ![Pencarian Katalog](https://user-images.githubusercontent.com/36807013/215046444-027d8b85-ba18-40db-9a91-28cf26d90eff.jpg) ![Pencarian Katalog_result](https://user-images.githubusercontent.com/36807013/215048524-713d1fc1-df2b-4f62-b3c8-1ccb27b58c63.png) ![Verifikasi Peminjaman (2)_result](https://user-images.githubusercontent.com/36807013/215048571-2ec1c138-259c-4e50-bd49-37f7d9bac6aa.png)
 
