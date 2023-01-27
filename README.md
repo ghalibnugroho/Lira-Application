@@ -1,5 +1,5 @@
 # Lira-Application
-Build an Android Apps with Jetpack Compose (Kotlin) Use QR-Code and QR-Scanner.
+Build an Android Apps with Jetpack Compose (Kotlin) Using QR-Code Scanner and QR Generator.
 
 LIRA (Literasi Raden) adalah aplikasi pendukung pelayanan sirkulasi perpustakaan universitas yang mendukung pemindaian Kode-QR untuk presensi masuk perpustakaan dan peminjaman buku di lokasi area perpustakaan
 
