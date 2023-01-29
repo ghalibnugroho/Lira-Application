@@ -1,5 +1,5 @@
 # Lira-Application
-![LIRA](https://user-images.githubusercontent.com/36807013/215243999-9743b6f4-df29-4ae5-aa68-a8e0606800c0.png)
+![LIRA_result](https://user-images.githubusercontent.com/36807013/215308962-093a3b83-0aad-434f-a3d0-3c0b27e4de57.jpg)
 
 Build an Android Apps with Jetpack Compose (Kotlin) Using QR-Code Scanner and QR Generator. 
 
