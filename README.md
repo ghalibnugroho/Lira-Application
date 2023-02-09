@@ -14,9 +14,8 @@ Project Used:
 
 LIRA (Literasi Raden) adalah sistem pendukung pelayanan sirkulasi perpustakaan berbasis mobile yang mendukung untuk presensi kehadiran dan peminjaman individu secara mandiri di lokasi area perpustakaan. Selain itu, sistem ini menyediakan beberapa fitur lainnya seperti daftar koleksi sederhana, menambah koleksi, men-generate kode-QR pada masing-masing unit koleksi, menghapus unit koleksi, menyediakan riwayat peminjaman, menyediakan daftar seluruh anggota, verifikasi peminjaman, validasi peminjaman dan lain sebagainya.
 
-API yang digunakan:
+API yang digunakan: (ex)
 
-<img alt="katalog" src="https://user-images.githubusercontent.com/36807013/217808908-459a4959-0a2c-4c15-8f61-ef2a30fc4173.png" width="500" height="320"> <img alt="Peminjaman" src="https://user-images.githubusercontent.com/36807013/217807419-5d7adb62-e8f8-483d-b9e9-ee64e8ec156e.png" width="500" height="320">
-
+<img alt="katalog" src="https://user-images.githubusercontent.com/36807013/217808908-459a4959-0a2c-4c15-8f61-ef2a30fc4173.png" width="500" height="320"> 
 
 
