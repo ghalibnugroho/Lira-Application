@@ -12,7 +12,11 @@ Project Used:
 4. CameraX
 5. MLKit
 
-LIRA (Literasi Raden) adalah sistem pendukung pelayanan sirkulasi perpustakaan berbasis mobile yang mendukung untuk presensi kehadiran dan peminjaman individu secara mandiri di lokasi area perpustakaan. Selain itu, sistem ini menyediakan beberapa fitur lainnya seperti daftar koleksi sederhana, menambah koleksi, men-generate kode-QR pada masing-masing unit koleksi, menghapus unit koleksi, menyediakan riwayat peminjaman, menyediakan daftar seluruh anggota, verifikasi peminjaman, validasi peminjaman dan lain sebagainya.
+LIRA (Literasi Raden) adalah sistem pendukung pelayanan sirkulasi perpustakaan berbasis mobile yang mendukung untuk 
+presensi kehadiran dan peminjaman individu secara mandiri di lokasi area perpustakaan. Selain itu, sistem ini menyediakan
+beberapa fitur lainnya seperti daftar koleksi sederhana, menambah koleksi, men-generate kode-QR pada masing-masing unit koleksi,
+menghapus unit koleksi, menyediakan riwayat peminjaman, menyediakan daftar seluruh anggota, verifikasi peminjaman, validasi peminjaman
+dan lain sebagainya.
 
 API yang digunakan: sample
 
