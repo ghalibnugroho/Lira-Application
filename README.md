@@ -22,7 +22,7 @@ Selain itu, sistem ini menyediakan beberapa fitur lainnya seperti:
 5. menyediakan riwayat peminjaman,
 6. menyediakan daftar seluruh anggota,
 7. verifikasi peminjaman, 
-8. validasi peminjaman
+8. validasi peminjaman,
 9. dan lain sebagainya.
 
 API yang digunakan: sample
