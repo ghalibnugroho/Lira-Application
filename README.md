@@ -13,10 +13,17 @@ Project Used:
 5. MLKit
 
 LIRA (Literasi Raden) adalah sistem pendukung pelayanan sirkulasi perpustakaan berbasis mobile yang mendukung untuk 
-presensi kehadiran dan peminjaman individu secara mandiri di lokasi area perpustakaan. Selain itu, sistem ini menyediakan
-beberapa fitur lainnya seperti daftar koleksi sederhana, menambah koleksi, men-generate kode-QR pada masing-masing unit koleksi,
-menghapus unit koleksi, menyediakan riwayat peminjaman, menyediakan daftar seluruh anggota, verifikasi peminjaman, validasi peminjaman
-dan lain sebagainya.
+presensi kehadiran dan peminjaman individu secara mandiri di lokasi area perpustakaan. 
+Selain itu, sistem ini menyediakan beberapa fitur lainnya seperti:
+1. daftar koleksi sederhana
+2. menambah koleksi
+3. men-generate kode-QR pada masing-masing unit koleksi,
+4. menghapus unit koleksi,
+5. menyediakan riwayat peminjaman,
+6. menyediakan daftar seluruh anggota,
+7. verifikasi peminjaman, 
+8. validasi peminjaman
+9. dan lain sebagainya.
 
 API yang digunakan: sample
 
