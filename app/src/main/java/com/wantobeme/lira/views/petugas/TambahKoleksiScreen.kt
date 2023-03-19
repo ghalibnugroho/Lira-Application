@@ -189,6 +189,7 @@ fun TambahKoleksiScreen(viewModel: KoleksiViewModel, navController: NavControlle
                                     }
                                 }
                             }
+                            else -> {}
                         }
                     }
                 }
