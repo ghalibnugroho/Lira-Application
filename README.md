@@ -3,14 +3,15 @@
 
 Build an Android Apps with Jetpack Compose (Kotlin) Using QR-Code Scanner and QR Generator. 
 
-*Attention* : These codes just the apps (front-end). Data not included.
-
 Project Used:
 1. MVVM [Repository Pattern]
 2. Hilt/Dagger
 3. Retrofit2
 4. CameraX
 5. MLKit
+
+Login As Admin: ghalib@student.ub.ac.id || mobileapp
+Login As Members: diansastro@gmail.com || dian
 
 LIRA (Literasi Raden) adalah sistem pendukung pelayanan sirkulasi perpustakaan berbasis mobile yang mendukung untuk 
 presensi kehadiran dan peminjaman individu secara mandiri di lokasi area perpustakaan. 
