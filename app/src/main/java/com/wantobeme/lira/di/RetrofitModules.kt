@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 
 object Constant {
-    const val BASE_URL ="https://pejabatbackend.cloud"
+    const val BASE_URL ="https://pejabatbackend.cloud/lira/"
 }
 
 @InstallIn(SingletonComponent::class)
